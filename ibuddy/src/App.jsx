@@ -50,8 +50,14 @@ function App() {
   return (
     <>
       {isAuthenticated ? (
-        <div className="main-layout">
-          <div className="chat-section">
+        <div
+          className="main-layout"
+          style={{ display: 'flex', flexDirection: 'column', maxWidth: '100%', padding: '1rem', boxSizing: 'border-box' }}
+        >
+          <div
+            className="chat-section"
+            style={{ flex: 1, overflowY: 'auto', marginBottom: '1rem' }}
+          >
             <header className="app-header">
               <h1>ibuddy chat chat</h1>
               <p style={{ fontSize: '0.9rem', color: '#888' }}>
@@ -96,7 +102,10 @@ function App() {
             </div>
           </div>
 
-          <div className="side-section">
+          <div
+            className="side-section"
+            style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }}
+          >
             <div className="auth-box">
               <input type="text" placeholder="아이디" className="auth-input" />
               <input type="password" placeholder="비밀번호" className="auth-input" />
@@ -133,7 +142,10 @@ function App() {
           </div>
         </div>
       ) : (
-        <div className="auth-gate">
+        <div
+          className="auth-gate"
+          style={{ padding: '1rem', textAlign: 'center' }}
+        >
           <h1>ibuddy 시작하기</h1>
           <div className="auth-buttons">
             <button>로그인</button>
