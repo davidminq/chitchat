@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect } from 'react'
 
 function App() {
@@ -147,4 +148,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
