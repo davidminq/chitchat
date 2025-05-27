@@ -196,7 +196,7 @@ function App() {
             </div>
 
             {/* Added Social Login Options */}
-            <div className="social-login" style={{ marginTop: '8rem', textAlign: 'center' }}>
+            <div className="social-login" style={{ marginTop: '2rem', textAlign: 'center' }}>
               <p style={{ marginBottom: '0.8rem', color: '#ccc' }}>또는 소셜 계정으로 로그인</p>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: '0.8rem', padding: '0 1rem' }}>
                 <button style={{ backgroundColor: 'white', color: '#333', padding: '0.8rem', borderRadius: '4px', border: '1px solid #ddd', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}> {/* Added subtle border for white button, and flex styles, changed color and added bold font weight */}
@@ -205,13 +205,13 @@ function App() {
                   Continue with Google
                 </button>
                 <button style={{ backgroundColor: 'white', color: '#333', padding: '0.8rem', borderRadius: '4px', border: '1px solid #ddd', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}> {/* Changed background, text color, and added border, added bold font weight */}
-                  {/* Apple Icon Here */}
+                  {/* Apple Icon Here */}cd ~/Desktop/concretelab/ibuddy
                   <img src={appleIcon} alt="Apple" style={{ width: '24px', height: '24px', marginRight: '8px', objectFit: 'contain' }} /> {/* Added height back */}
                   Continue with Apple
                 </button>
               </div>
             </div>
-
+            
             <footer className="chat-footer" style={{
               marginTop: '4rem',
               padding: '1rem 0',
