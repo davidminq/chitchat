@@ -144,7 +144,21 @@ function App() {
             <div className="auth-box">
               <input type="text" placeholder="아이디" className="auth-input" />
               <input type="password" placeholder="비밀번호" className="auth-input" />
-              <button className="auth-login">로그인</button>
+              <button
+                className="auth-login"
+                style={{
+                  backgroundColor: '#58a6ff',
+                  color: 'white',
+                  padding: '0.8rem 1.2rem',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  marginBottom: '1rem'
+                }}
+              >
+                로그인
+              </button>
               <div
                 className="auth-options"
                 style={{
