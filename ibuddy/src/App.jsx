@@ -184,7 +184,7 @@ function App() {
               </div>
             </div>
 
-            <footer className="chat-footer">
+            <footer className="chat-footer" style={{ marginTop: '2rem', position: 'relative' }}>
               <div
                 className="footer-meta"
                 style={{
