@@ -127,7 +127,21 @@ function App() {
                 }}
                 style={{ flex: 7, backgroundColor: 'white', color: '#000' }}
               />
-              <button className="send-button" onClick={handleSend}>Send</button>
+              <button
+                className="send-button"
+                onClick={handleSend}
+                style={{
+                  backgroundColor: '#58a6ff',
+                  color: 'white',
+                  padding: '0.5rem 1rem',
+                  border: 'none',
+                  borderRadius: '4px',
+                  marginLeft: '0.5rem',
+                  fontWeight: 'bold'
+                }}
+              >
+                Send
+              </button>
             </div>
           </div>
         </div>
