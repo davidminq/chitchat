@@ -1,5 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect } from 'react'
+import appleIcon from './assets/icons/btn_apple.svg'; /* Import Apple icon */
+import googleIcon from './assets/icons/btn_google.svg'; /* Import Google icon */
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -52,11 +54,27 @@ function App() {
       {isAuthenticated ? (
         <div
           className="main-layout"
-          style={{ display: 'flex', flexDirection: 'column', maxWidth: '100%', padding: '1rem', boxSizing: 'border-box' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '1rem',
+            boxSizing: 'border-box',
+            minHeight: '100vh',
+            alignItems: 'center'
+          }}
         >
           <div
             className="chat-section"
-            style={{ flex: 1, overflowY: 'auto', marginBottom: '1rem' }}
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              marginBottom: '1rem',
+              backgroundColor: '#1e1e1e',
+              padding: '1rem',
+              borderRadius: '8px'
+            }}
           >
             <header className="app-header">
               <h1>ibuddy chat chat</h1>
@@ -83,13 +101,17 @@ function App() {
               )}
             </main>
 
-            <div className="chat-controls">
+            <div
+              className="chat-controls"
+              style={{ display: 'flex' }}
+            >
               <input
                 type="text"
                 className="nickname-input"
                 placeholder="Nickname"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
+                style={{ flex: 3, backgroundColor: 'white' }}
               />
               <input
                 type="text"
@@ -97,14 +119,27 @@ function App() {
                 placeholder="Type a message..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSend();
+                  }
+                }}
+                style={{ flex: 7, backgroundColor: 'white' }}
               />
               <button className="send-button" onClick={handleSend}>Send</button>
             </div>
           </div>
-
+        </div>
+      ) : (
+        <div
+          className="auth-gate"
+          style={{ padding: '1rem', textAlign: 'center' }}
+        >
+          <h1>ibuddy</h1>
           <div
             className="side-section"
-            style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }}
+            style={{ width: '100%', maxWidth: '400px' }}
           >
             <div className="auth-box">
               <input type="text" placeholder="아이디" className="auth-input" />
@@ -126,6 +161,26 @@ function App() {
               </div>
               <div className="auth-links">
                 <a href="#">계정 찾기</a> | <a href="#">메일 재발송</a>
+              </div>
+              <button onClick={() => setIsAuthenticated(true)} className="guest-button">
+                게스트로 시작
+              </button>
+            </div>
+
+            {/* Added Social Login Options */}
+            <div className="social-login" style={{ marginTop: '8rem', textAlign: 'center' }}>
+              <p style={{ marginBottom: '0.8rem', color: '#ccc' }}>또는 소셜 계정으로 로그인</p>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: '0.8rem', padding: '0 1rem' }}>
+                <button style={{ backgroundColor: 'white', color: '#333', padding: '0.8rem', borderRadius: '4px', border: '1px solid #ddd', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}> {/* Added subtle border for white button, and flex styles, changed color and added bold font weight */}
+                  {/* Google Icon Here */}
+                  <img src={googleIcon} alt="Google" style={{ width: '24px', height: '24px', marginRight: '8px', objectFit: 'contain' }} /> {/* Added height back */}
+                  Continue with Google
+                </button>
+                <button style={{ backgroundColor: 'white', color: '#333', padding: '0.8rem', borderRadius: '4px', border: '1px solid #ddd', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}> {/* Changed background, text color, and added border, added bold font weight */}
+                  {/* Apple Icon Here */}
+                  <img src={appleIcon} alt="Apple" style={{ width: '24px', height: '24px', marginRight: '8px', objectFit: 'contain' }} /> {/* Added height back */}
+                  Continue with Apple
+                </button>
               </div>
             </div>
 
@@ -152,20 +207,6 @@ function App() {
               </div>
             </footer>
           </div>
-        </div>
-      ) : (
-        <div
-          className="auth-gate"
-          style={{ padding: '1rem', textAlign: 'center' }}
-        >
-          <h1>ibuddy 시작하기</h1>
-          <div className="auth-buttons">
-            <button>로그인</button>
-            <button>회원가입</button>
-          </div>
-          <button onClick={() => setIsAuthenticated(true)} className="guest-button">
-            게스트로 시작
-          </button>
         </div>
       )}
     </>
