@@ -111,7 +111,7 @@ function App() {
                 placeholder="Nickname"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
-                style={{ flex: 3, backgroundColor: 'white' }}
+                style={{ flex: 3, backgroundColor: 'white', color: '#000' }}
               />
               <input
                 type="text"
@@ -125,7 +125,7 @@ function App() {
                     handleSend();
                   }
                 }}
-                style={{ flex: 7, backgroundColor: 'white' }}
+                style={{ flex: 7, backgroundColor: 'white', color: '#000' }}
               />
               <button className="send-button" onClick={handleSend}>Send</button>
             </div>
@@ -184,7 +184,12 @@ function App() {
               </div>
             </div>
 
-            <footer className="chat-footer" style={{ marginTop: '2rem', position: 'relative' }}>
+            <footer className="chat-footer" style={{
+              marginTop: '4rem',
+              padding: '1rem 0',
+              backgroundColor: 'transparent',
+              textAlign: 'center'
+            }}>
               <div
                 className="footer-meta"
                 style={{
@@ -192,10 +197,9 @@ function App() {
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  textAlign: 'center',
                   fontSize: '0.75rem',
-                  color: '#d1d5da',
-                  marginTop: '0.5rem'
+                  color: '#bbb',
+                  gap: '0.3rem'
                 }}
               >
                 <small style={{ display: 'block' }}>
