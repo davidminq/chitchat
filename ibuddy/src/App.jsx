@@ -205,13 +205,13 @@ function App() {
                   Continue with Google
                 </button>
                 <button style={{ backgroundColor: 'white', color: '#333', padding: '0.8rem', borderRadius: '4px', border: '1px solid #ddd', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}> {/* Changed background, text color, and added border, added bold font weight */}
-                  {/* Apple Icon Here */}cd ~/Desktop/concretelab/ibuddy
+                  {/* Apple Icon Here */}
                   <img src={appleIcon} alt="Apple" style={{ width: '24px', height: '24px', marginRight: '8px', objectFit: 'contain' }} /> {/* Added height back */}
                   Continue with Apple
                 </button>
               </div>
             </div>
-            
+
             <footer className="chat-footer" style={{
               marginTop: '4rem',
               padding: '1rem 0',
