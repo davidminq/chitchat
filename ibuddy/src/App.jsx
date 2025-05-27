@@ -130,11 +130,23 @@ function App() {
             </div>
 
             <footer className="chat-footer">
-              <div className="footer-meta">
-                <small style={{ display: 'block', textAlign: 'center', fontSize: '0.75rem', color: '#d1d5da', marginTop: '0.5rem' }}>
+              <div
+                className="footer-meta"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  fontSize: '0.75rem',
+                  color: '#d1d5da',
+                  marginTop: '0.5rem'
+                }}
+              >
+                <small style={{ display: 'block' }}>
                   © 2025 Concrete Lab — All rights reserved. {version}
                 </small>
-                <small style={{ display: 'block', textAlign: 'center', fontSize: '0.75rem', color: '#d1d5da', marginTop: '0.25rem' }}>
+                <small style={{ display: 'block', marginTop: '0.25rem' }}>
                   현재 접속자: {messages.length}명
                 </small>
               </div>
