@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import appleIcon from './assets/icons/btn_apple.svg'; /* Import Apple icon */
 import googleIcon from './assets/icons/btn_google.svg'; /* Import Google icon */
+import blueCheckMarkIcon from './assets/icons/blue_check.svg'; /* Corrected blue checkmark icon import */
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -29,8 +30,8 @@ function App() {
       setMessages([
         {
           id: Date.now(),
-          nickname: "ibuddy",
-          text: "어서오세요! 랜덤 채팅을 즐겨보세요 😊",
+          nickname: "Admin",
+          text: "Welcome! Please follow netiquette as we are anonymous. Users who violate netiquette will be banned from the server.",
           color: "#58a6ff"
         }
       ]);
@@ -77,9 +78,9 @@ function App() {
             }}
           >
             <header className="app-header">
-              <h1>ibuddy chat chat</h1>
+              <h1>Hello!</h1>
               <p style={{ fontSize: '0.9rem', color: '#888' }}>
-                랜덤한 모르는 사람과 채팅을 즐기실 수 있습니다. 아래 입력창에 메시지를 입력해주세요.
+                Enjoy chatting with random people. Please type your message in the input box below.
               </p>
             </header>
 
@@ -90,7 +91,12 @@ function App() {
                 messages.map(msg => (
                   <div key={msg.id} className="chat-bubble">
                     <div className="message-content">
-                      <strong style={{ color: msg.color, marginRight: '0.5rem' }}>{msg.nickname}</strong>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '00.05rem' }}>
+                        <strong style={{ color: msg.color }}>{msg.nickname}</strong>
+                        {msg.nickname === "Admin" && (
+                          <img src={blueCheckMarkIcon} alt="Blue Check" style={{ width: '18px', height: '18px', objectFit: 'contain' }} />
+                        )}
+                      </span>
                       <span className="timestamp">
                         {new Date(msg.id).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
