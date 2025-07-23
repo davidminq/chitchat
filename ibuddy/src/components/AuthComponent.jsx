@@ -212,26 +212,6 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
           </div>
         </div>
 
-        {/* Guest Login */}
-        <div style={{ marginTop: '2rem' }}>
-          <button 
-            onClick={handleGuestLogin}
-            disabled={loading}
-            className="guest-button"
-            style={{
-              backgroundColor: '#58a6ff',
-              color: 'white',
-              padding: '0.8rem 1.2rem',
-              border: 'none',
-              borderRadius: '4px',
-              fontWeight: 'bold',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.7 : 1
-            }}
-          >
-            {loading ? '로그인 중...' : '게스트로 시작'}
-          </button>
-        </div>
 
         {/* Demo Mode Button */}
         {onGuestMode && (

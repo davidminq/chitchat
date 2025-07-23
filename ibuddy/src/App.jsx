@@ -100,42 +100,6 @@ function App() {
     <div style={{ backgroundColor: '#000', minHeight: '100vh' }}>
       {user ? (
         <ChatComponent user={user} onLogout={handleLogout} />
-      ) : guestMode ? (
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh',
-          color: 'white',
-          textAlign: 'center'
-        }}>
-          <h1 style={{ 
-            fontSize: '2.5rem', 
-            marginBottom: '1rem', 
-            background: 'linear-gradient(45deg, #58a6ff, #a855f7)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}>
-            ibuddy
-          </h1>
-          <p style={{ color: '#888', marginBottom: '2rem' }}>Firebase 설정이 필요하지만 데모 모드로 체험해보세요</p>
-          <button 
-            onClick={handleGuestMode}
-            style={{
-              backgroundColor: '#58a6ff',
-              color: 'white',
-              padding: '1rem 2rem',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '1rem',
-              fontWeight: 'bold',
-              cursor: 'pointer'
-            }}
-          >
-            데모 모드로 체험하기
-          </button>
-        </div>
       ) : (
         <AuthComponent onAuthSuccess={handleAuthSuccess} onGuestMode={handleGuestMode} />
       )}
