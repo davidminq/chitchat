@@ -153,7 +153,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
               onMouseOut={(e) => e.target.style.backgroundColor = 'white'}
             >
               <img src={googleIcon} alt="Google" style={{ width: '20px', height: '20px', marginRight: '12px', objectFit: 'contain' }} />
-              {loading ? '로그인 중...' : 'Google로 계속하기'}
+              {loading ? '로그인 중...' : 'Continue with Google'}
             </button>
             
             {/* Apple 로그인 */}
@@ -180,7 +180,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
               onMouseOut={(e) => e.target.style.backgroundColor = '#000'}
             >
               <img src={appleIcon} alt="Apple" style={{ width: '20px', height: '20px', marginRight: '12px', objectFit: 'contain', filter: 'invert(1)' }} />
-              {loading ? '로그인 중...' : 'Apple로 계속하기'}
+              {loading ? '로그인 중...' : 'Continue with Apple'}
             </button>
 
             {/* 카카오 로그인 */}
