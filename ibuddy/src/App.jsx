@@ -9,14 +9,14 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Firebase 설정 확인 - placeholder 값이면 게스트 모드로 설정
+    // Check Firebase configuration - set to guest mode if placeholder values
     if (!isFirebaseConfigured()) {
       console.log('Firebase not configured, enabling guest mode');
       setLoading(false);
       return;
     }
 
-    // Firebase가 올바르게 설정된 경우
+    // If Firebase is properly configured
     try {
       const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
         if (firebaseUser) {
@@ -38,7 +38,7 @@ function App() {
 
       return () => unsubscribe();
     } catch (error) {
-      // Firebase 설정 오류시에도 AuthComponent를 보여줌
+      // Show AuthComponent even if Firebase configuration error
       console.log('Firebase error, showing auth component:', error);
       setLoading(false);
     }
@@ -53,7 +53,7 @@ function App() {
   };
 
   const handleGuestMode = () => {
-    // 게스트 모드로 임시 사용자 생성
+    // Create temporary user for guest mode
     const guestUser = {
       uid: 'guest_' + Date.now(),
       nickname: 'Guest' + Math.floor(Math.random() * 1000),
@@ -89,13 +89,13 @@ function App() {
         height: '100vh',
         color: 'white' 
       }}>
-        <p>로딩 중...</p>
+        <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ backgroundColor: '#000', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#000' }}>
       {user ? (
         <ChatComponent user={user} onLogout={handleLogout} />
       ) : (

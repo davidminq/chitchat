@@ -27,7 +27,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
         if (!result.success) throw new Error(result.error);
         userCredential = { user: result.user };
         
-        // 회원가입 시 사용자 프로필 생성
+        // Create user profile on signup
         const nickname = generateRandomNickname();
         await createUserProfile(userCredential.user.uid, {
           email: userCredential.user.email,
@@ -36,7 +36,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
         });
       }
 
-      // 사용자 프로필 정보 가져오기
+      // Get user profile information
       const userProfile = await getUserProfile(userCredential.user.uid);
       
       onAuthSuccess({
@@ -50,18 +50,18 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
     } catch (error) {
       console.error('Email auth error:', error);
       
-      let errorMessage = '인증 중 오류가 발생했습니다.';
+      let errorMessage = 'An error occurred during authentication.';
       
       if (error.code === 'auth/user-not-found') {
-        errorMessage = '등록되지 않은 이메일입니다.';
+        errorMessage = 'Email not registered.';
       } else if (error.code === 'auth/wrong-password') {
-        errorMessage = '잘못된 비밀번호입니다.';
+        errorMessage = 'Incorrect password.';
       } else if (error.code === 'auth/email-already-in-use') {
-        errorMessage = '이미 사용 중인 이메일입니다.';
+        errorMessage = 'Email already in use.';
       } else if (error.code === 'auth/weak-password') {
-        errorMessage = '비밀번호가 너무 약합니다. (최소 6자 이상)';
+        errorMessage = 'Password is too weak. (minimum 6 characters)';
       } else if (error.code === 'auth/invalid-email') {
-        errorMessage = '유효하지 않은 이메일 형식입니다.';
+        errorMessage = 'Invalid email format.';
       }
       
       setError(errorMessage);
@@ -75,185 +75,170 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
 
 
   return (
-    <div className="auth-gate" style={{ 
-      padding: '1rem',
-      paddingBottom: '6rem', // 풋터 공간 확보
-      textAlign: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-      position: 'relative'
-    }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ 
-          marginTop: '2rem',
-          color: '#58a6ff',
-          fontSize: '2.5rem',
-          fontWeight: 'bold'
-        }}>ibuddy</h1>
-      </div>
-      
-      <div className="side-section" style={{ 
-        width: '100%', 
-        maxWidth: '400px', 
-        margin: '0 auto',
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        {/* Email/Password Form */}
-        <div style={{ marginBottom: '2rem', width: '100%' }}>
-          <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-            <button
-              onClick={() => setIsLogin(true)}
-              style={{
-                backgroundColor: isLogin ? '#58a6ff' : 'transparent',
-                color: isLogin ? 'white' : '#58a6ff',
-                border: '1px solid #58a6ff',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                minWidth: '80px'
-              }}
-            >
-              로그인
-            </button>
-            <button
-              onClick={() => setIsLogin(false)}
-              style={{
-                backgroundColor: !isLogin ? '#58a6ff' : 'transparent',
-                color: !isLogin ? 'white' : '#58a6ff',
-                border: '1px solid #58a6ff',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                minWidth: '80px'
-              }}
-            >
-              회원가입
-            </button>
+    <>
+      <div className="auth-gate">
+        <div className="auth-container">
+          <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
+            <h1 style={{ 
+              marginTop: '2rem',
+              color: '#58a6ff',
+              fontSize: '2.5rem',
+              fontWeight: 'bold'
+            }}>ibuddy</h1>
           </div>
+        
+          <div className="side-section">
+            {/* Email/Password Form */}
+            <div style={{ marginBottom: '2rem', width: '100%' }}>
+              <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+                <button
+                  onClick={() => setIsLogin(true)}
+                  style={{
+                    backgroundColor: isLogin ? '#58a6ff' : 'transparent',
+                    color: isLogin ? 'white' : '#58a6ff',
+                    border: '1px solid #58a6ff',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                    minWidth: '80px'
+                  }}
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => setIsLogin(false)}
+                  style={{
+                    backgroundColor: !isLogin ? '#58a6ff' : 'transparent',
+                    color: !isLogin ? 'white' : '#58a6ff',
+                    border: '1px solid #58a6ff',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                    minWidth: '80px'
+                  }}
+                >
+                  Sign Up
+                </button>
+              </div>
 
-          <form onSubmit={handleEmailAuth} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
-            <input
-              type="email"
-              placeholder="이메일"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{
-                padding: '0.8rem',
-                borderRadius: '8px',
-                border: '1px solid #444',
-                backgroundColor: '#1a1a1a',
-                color: 'white',
-                fontSize: '1rem',
-                width: '100%',
-                boxSizing: 'border-box'
-              }}
-            />
-            <input
-              type="password"
-              placeholder="비밀번호"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                padding: '0.8rem',
-                borderRadius: '8px',
-                border: '1px solid #444',
-                backgroundColor: '#1a1a1a',
-                color: 'white',
-                fontSize: '1rem',
-                width: '100%',
-                boxSizing: 'border-box'
-              }}
-            />
-            <button
-              type="submit"
-              disabled={loading || !email || !password}
-              style={{
-                backgroundColor: loading || !email || !password ? '#333' : '#58a6ff',
-                color: 'white',
-                padding: '0.8rem',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '1rem',
-                cursor: loading || !email || !password ? 'not-allowed' : 'pointer',
-                fontWeight: '500',
-                width: '100%'
-              }}
-            >
-              {loading ? '처리 중...' : (isLogin ? '로그인' : '회원가입')}
-            </button>
-          </form>
+              <form onSubmit={handleEmailAuth} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{
+                    padding: '0.8rem',
+                    borderRadius: '8px',
+                    border: '1px solid #444',
+                    backgroundColor: '#1a1a1a',
+                    color: 'white',
+                    fontSize: '1rem',
+                    width: '100%',
+                    boxSizing: 'border-box'
+                  }}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{
+                    padding: '0.8rem',
+                    borderRadius: '8px',
+                    border: '1px solid #444',
+                    backgroundColor: '#1a1a1a',
+                    color: 'white',
+                    fontSize: '1rem',
+                    width: '100%',
+                    boxSizing: 'border-box'
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={loading || !email || !password}
+                  style={{
+                    backgroundColor: loading || !email || !password ? '#333' : '#58a6ff',
+                    color: 'white',
+                    padding: '0.8rem',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '1rem',
+                    cursor: loading || !email || !password ? 'not-allowed' : 'pointer',
+                    fontWeight: '500',
+                    width: '100%'
+                  }}
+                >
+                  {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}
+                </button>
+              </form>
 
-          {error && (
-            <p style={{ color: '#ff6b6b', textAlign: 'center', marginTop: '1rem', fontSize: '0.9rem' }}>
-              {error}
-            </p>
-          )}
-        </div>
+              {error && (
+                <p style={{ color: '#ff6b6b', textAlign: 'center', marginTop: '1rem', fontSize: '0.9rem' }}>
+                  {error}
+                </p>
+              )}
+            </div>
 
-        <div style={{ textAlign: 'center', margin: '1rem 0', color: '#666' }}>
-          또는
-        </div>
+            <div style={{ textAlign: 'center', margin: '1rem 0', color: '#666' }}>
+              or
+            </div>
 
-        {/* SSO Buttons */}
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          gap: '1rem', 
-          marginBottom: '2rem',
-          width: '100%',
-          maxWidth: '320px'
-        }}>
-          <img src="./sso/apple.svg" alt="Apple" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
-          <img src="./sso/google.svg" alt="Google" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
-          <img src="./sso/fb.svg" alt="Facebook" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
-        </div>
+            {/* SSO Buttons */}
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              gap: '1rem', 
+              marginBottom: '2rem',
+              width: '100%',
+              maxWidth: '320px',
+              margin: '0 auto'
+            }}>
+              <img src="./sso/apple.svg" alt="Apple" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
+              <img src="./sso/google.svg" alt="Google" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
+              <img src="./sso/fb.svg" alt="Facebook" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
+            </div>
 
-        {/* Demo Mode Button */}
-        {onGuestMode && (
-          <div style={{ marginTop: '2rem', marginBottom: '3rem' }}>
-            <button 
-              onClick={onGuestMode}
-              style={{
-                backgroundColor: 'transparent',
-                color: '#58a6ff',
-                padding: '0.8rem 1.2rem',
-                border: '1px solid #58a6ff',
-                borderRadius: '8px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = '#58a6ff';
-                e.target.style.color = 'white';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = 'transparent';
-                e.target.style.color = '#58a6ff';
-              }}
-            >
-              데모 모드로 체험하기
-            </button>
+            {/* Demo Mode Button */}
+            {onGuestMode && (
+              <div style={{ marginTop: '4rem', marginBottom: '3rem', textAlign: 'center' }}>
+                <button 
+                  onClick={onGuestMode}
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: '#58a6ff',
+                    padding: '0.8rem 1.2rem',
+                    border: '1px solid #58a6ff',
+                    borderRadius: '8px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.backgroundColor = '#58a6ff';
+                    e.target.style.color = 'white';
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.color = '#58a6ff';
+                  }}
+                >
+                  Try Demo Mode
+                </button>
+              </div>
+            )}
+
           </div>
-        )}
-
+        </div>
       </div>
-
       <footer className="chat-footer" style={{
-        position: 'absolute',
-        bottom: '0',
-        left: '0',
-        right: '0',
+        marginTop: 'auto',
+        width: '100vw',
         padding: '1rem 0',
         backgroundColor: 'transparent',
         textAlign: 'center'
@@ -271,11 +256,11 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
             © 2025 Concrete Lab — All rights reserved. v1.0.3
           </small>
           <small style={{ display: 'block', marginTop: '0.25rem' }}>
-            현재 접속자: 익명 사용자들
+            Current users: Anonymous users
           </small>
         </div>
       </footer>
-    </div>
+    </>
   );
 };
 

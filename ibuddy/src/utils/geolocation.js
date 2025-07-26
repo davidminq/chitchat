@@ -1,4 +1,4 @@
-// 통합 위치 서비스 시스템
+// Integrated location service system
 class LocationService {
   constructor() {
     this.userLocation = null;
@@ -6,17 +6,17 @@ class LocationService {
     this.locationOptions = {
       enableHighAccuracy: true,
       timeout: 10000,
-      maximumAge: 30000 // 30초 캐시
+      maximumAge: 30000 // 30 second cache
     };
   }
 
-  // 현재 위치 가져오기
+  // Get current position
   async getCurrentPosition() {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
         reject({
           error: 'GEOLOCATION_NOT_SUPPORTED',
-          message: '이 브라우저는 위치 서비스를 지원하지 않습니다.'
+          message: 'This browser does not support location services.'
         });
         return;
       }
@@ -37,16 +37,16 @@ class LocationService {
           let errorMessage = '';
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              errorMessage = '위치 접근이 거부되었습니다. 브라우저 설정에서 위치 권한을 허용해주세요.';
+              errorMessage = 'Location access denied. Please allow location permission in your browser settings.';
               break;
             case error.POSITION_UNAVAILABLE:
-              errorMessage = '현재 위치를 찾을 수 없습니다.';
+              errorMessage = 'Current location cannot be found.';
               break;
             case error.TIMEOUT:
-              errorMessage = '위치 요청 시간이 초과되었습니다.';
+              errorMessage = 'Location request timed out.';
               break;
             default:
-              errorMessage = '알 수 없는 오류가 발생했습니다.';
+              errorMessage = 'An unknown error occurred.';
               break;
           }
           
@@ -61,12 +61,12 @@ class LocationService {
     });
   }
 
-  // 실시간 위치 추적 시작
+  // Start real-time location tracking
   startWatchingLocation(callback) {
     if (!navigator.geolocation) {
       callback({
         error: 'GEOLOCATION_NOT_SUPPORTED',
-        message: '이 브라우저는 위치 서비스를 지원하지 않습니다.'
+        message: 'This browser does not support location services.'
       });
       return;
     }
@@ -80,7 +80,7 @@ class LocationService {
           timestamp: Date.now()
         };
         
-        // 위치가 크게 변경된 경우에만 업데이트 (10m 이상)
+        // Update only when location has changed significantly (10m or more)
         if (this.hasLocationChanged(location, 10)) {
           this.userLocation = location;
           callback({ success: true, location });
@@ -90,7 +90,7 @@ class LocationService {
         callback({
           error: 'GEOLOCATION_ERROR',
           code: error.code,
-          message: '위치 추적 중 오류가 발생했습니다.'
+          message: 'An error occurred during location tracking.'
         });
       },
       this.locationOptions
@@ -99,7 +99,7 @@ class LocationService {
     return this.watchId;
   }
 
-  // 위치 추적 중지
+  // Stop location tracking
   stopWatchingLocation() {
     if (this.watchId !== null) {
       navigator.geolocation.clearWatch(this.watchId);
@@ -107,7 +107,7 @@ class LocationService {
     }
   }
 
-  // 위치 변경 감지
+  // Detect location changes
   hasLocationChanged(newLocation, minDistanceMeters = 10) {
     if (!this.userLocation) return true;
     
@@ -116,14 +116,14 @@ class LocationService {
       this.userLocation.longitude,
       newLocation.latitude,
       newLocation.longitude
-    ) * 1000; // km를 m로 변환
+    ) * 1000; // Convert km to meters
     
     return distance >= minDistanceMeters;
   }
 
-  // 두 지점 간 거리 계산 (하버사인 공식)
+  // Calculate distance between two points (Haversine formula)
   static calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // 지구 반지름 (km)
+    const R = 6371; // Earth radius (km)
     const dLat = LocationService.toRadians(lat2 - lat1);
     const dLon = LocationService.toRadians(lon2 - lon1);
     
@@ -133,23 +133,23 @@ class LocationService {
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // km 단위
+    const distance = R * c; // Distance in km
     
     return distance;
   }
 
-  // 도를 라디안으로 변환
+  // Convert degrees to radians
   static toRadians(degrees) {
     return degrees * (Math.PI / 180);
   }
 
-  // 반경 내 위치 확인
+  // Check if location is within radius
   static isWithinRadius(userLat, userLon, targetLat, targetLon, radiusKm = 1) {
     const distance = this.calculateDistance(userLat, userLon, targetLat, targetLon);
     return distance <= radiusKm;
   }
 
-  // 지오해시 생성 (채팅방 그룹핑용)
+  // Generate geohash (for chat room grouping)
   static generateGeohash(lat, lon, precision = 7) {
     const BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz';
     let idx = 0;
@@ -195,16 +195,16 @@ class LocationService {
     return geohash;
   }
 
-  // 채팅방 ID 생성 (그리드 시스템)
+  // Generate chat room ID (grid system)
   static getChatRoomId(latitude, longitude) {
-    const gridSize = 0.009; // 대략 1km
+    const gridSize = 0.009; // Approximately 1km
     const latGrid = Math.floor(latitude / gridSize);
     const lonGrid = Math.floor(longitude / gridSize);
     
     return `room_${latGrid}_${lonGrid}`;
   }
 
-  // 현재 위치의 지오해시 가져오기
+  // Get geohash of current location
   getCurrentGeohash(precision = 7) {
     if (!this.userLocation) return null;
     
@@ -215,7 +215,7 @@ class LocationService {
     );
   }
 
-  // 위치 정보 익명화
+  // Anonymize location information
   static anonymizeLocation(lat, lon, radiusMeters = 100) {
     const latOffset = (Math.random() - 0.5) * (radiusMeters / 111000);
     const lonOffset = (Math.random() - 0.5) * (radiusMeters / (111000 * Math.cos(lat * Math.PI / 180)));
@@ -226,7 +226,7 @@ class LocationService {
     };
   }
 
-  // 위치 상태 확인
+  // Check location status
   getLocationStatus() {
     return {
       hasLocation: this.userLocation !== null,
@@ -237,7 +237,7 @@ class LocationService {
     };
   }
 
-  // 위치 권한 상태 확인
+  // Check location permission status
   async checkLocationPermission() {
     if (!navigator.permissions) {
       return { state: 'unknown' };
@@ -255,7 +255,7 @@ class LocationService {
   }
 }
 
-// 위치 기반 채팅방 관리
+// Location-based chat room management
 class LocationChatManager {
   constructor(locationService) {
     this.locationService = locationService;
@@ -263,7 +263,7 @@ class LocationChatManager {
     this.nearbyUsers = new Map();
   }
 
-  // 현재 위치 기반 채팅방 ID 생성
+  // Generate chat room ID based on current location
   getCurrentChatRoomId() {
     const geohash = this.locationService.getCurrentGeohash(6);
     if (!geohash) return null;
@@ -271,7 +271,7 @@ class LocationChatManager {
     return `chat_${geohash}`;
   }
 
-  // 근처 사용자 목록 업데이트
+  // Update nearby users list
   updateNearbyUsers(userList) {
     const currentLocation = this.locationService.userLocation;
     if (!currentLocation) return [];
@@ -284,7 +284,7 @@ class LocationChatManager {
         currentLocation.longitude,
         user.location.latitude,
         user.location.longitude,
-        1 // 1km 반경
+        1 // 1km radius
       );
     });
 
@@ -296,12 +296,12 @@ class LocationChatManager {
     return nearbyUsers;
   }
 
-  // 채팅방 입장 가능 여부 확인
+  // Check if can join chat room
   canJoinChatRoom() {
     return this.locationService.userLocation !== null;
   }
 
-  // 현재 채팅방 정보
+  // Current chat room information
   getCurrentChatRoomInfo() {
     const chatRoomId = this.getCurrentChatRoomId();
     const nearbyUserCount = this.nearbyUsers.size;
@@ -315,10 +315,10 @@ class LocationChatManager {
   }
 }
 
-// 인스턴스 생성
+// Create instance
 const locationService = new LocationService();
 
-// 호환성을 위한 유틸리티 함수들
+// Utility functions for compatibility
 export const getCurrentPosition = () => {
   return locationService.getCurrentPosition();
 };

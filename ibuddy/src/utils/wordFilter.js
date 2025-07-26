@@ -1,7 +1,7 @@
 // Word filtering system for chat moderation
 const bannedWords = [
   // Add banned words here - keeping it minimal for demo
-  '욕설1', '욕설2', '부적절한단어', 
+  'badword1', 'badword2', 'inappropriate', 
   // You should expand this list based on your moderation needs
 ];
 
@@ -27,7 +27,7 @@ export const filterMessage = (message) => {
   // Check for suspicious patterns
   suspiciousPatterns.forEach(pattern => {
     if (pattern.test(filteredMessage)) {
-      filteredMessage = filteredMessage.replace(pattern, '[검열됨]');
+      filteredMessage = filteredMessage.replace(pattern, '[Censored]');
       hasViolation = true;
     }
   });

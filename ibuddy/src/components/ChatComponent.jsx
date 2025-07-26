@@ -28,7 +28,7 @@ const ChatComponent = ({ user, onLogout }) => {
         setLoading(false);
       } catch (error) {
         console.error('Location error:', error);
-        setError('위치 정보를 가져올 수 없습니다. 위치 권한을 허용해주세요.');
+        setError('Unable to get location information. Please allow location permission.');
         setLoading(false);
       }
     };
@@ -98,7 +98,7 @@ const ChatComponent = ({ user, onLogout }) => {
 
     const { filteredMessage, hasViolation } = filterMessage(input);
     
-    // 게스트 모드 또는 Firebase 에러 시 로컬 메시지 추가
+    // Add local message in guest mode or Firebase error
     if (user.uid.startsWith('guest_') || !chatRoomId) {
       const newMessage = {
         id: 'local_' + Date.now(),
@@ -117,7 +117,7 @@ const ChatComponent = ({ user, onLogout }) => {
       return;
     }
 
-    // Firebase 모드
+    // Firebase mode
     try {
       await addDoc(collection(db, 'messages'), {
         text: filteredMessage,
@@ -138,7 +138,7 @@ const ChatComponent = ({ user, onLogout }) => {
       setInput('');
     } catch (error) {
       console.error('Send message error:', error);
-      setError('메시지 전송에 실패했습니다.');
+      setError('Failed to send message.');
     }
   };
 
@@ -150,17 +150,17 @@ const ChatComponent = ({ user, onLogout }) => {
   const handleReport = async (messageId, reportedUserId) => {
     try {
       await reportUser(reportedUserId, user.uid, 'inappropriate_content', messageId);
-      alert('신고가 접수되었습니다.');
+      alert('Report has been submitted.');
     } catch (error) {
       console.error('Report error:', error);
-      alert('신고 접수에 실패했습니다.');
+      alert('Failed to submit report.');
     }
   };
 
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '2rem', color: 'white' }}>
-        <p>위치를 확인하는 중...</p>
+        <p>Checking location...</p>
       </div>
     );
   }
@@ -180,7 +180,7 @@ const ChatComponent = ({ user, onLogout }) => {
             borderRadius: '4px' 
           }}
         >
-          다시 시도
+          Retry
         </button>
       </div>
     );
@@ -209,7 +209,7 @@ const ChatComponent = ({ user, onLogout }) => {
             )}
           </h2>
           <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>
-            반경 1km 내 익명 채팅
+            Anonymous chat within 1km radius
           </p>
         </div>
         <button 
@@ -223,7 +223,7 @@ const ChatComponent = ({ user, onLogout }) => {
             cursor: 'pointer'
           }}
         >
-          로그아웃
+          Logout
         </button>
       </div>
 
@@ -250,7 +250,7 @@ const ChatComponent = ({ user, onLogout }) => {
         >
           {messages.length === 0 ? (
             <p style={{ color: "#ffffff", textAlign: "center" }}>
-              주변 1km 내 사용자들과 채팅을 시작해보세요!
+              Start chatting with users within 1km around you!
             </p>
           ) : (
             messages.map(msg => {
@@ -284,7 +284,7 @@ const ChatComponent = ({ user, onLogout }) => {
                           onClick={() => handleReport(msg.id, msg.userId)}
                           style={{ background: 'none', border: 'none', color: '#ff4444', cursor: 'pointer' }}
                         >
-                          신고
+                          Report
                         </button>
                       )}
                     </div>
@@ -300,7 +300,7 @@ const ChatComponent = ({ user, onLogout }) => {
           <input
             type="text"
             className="message-input"
-            placeholder="메시지를 입력하세요..."
+            placeholder="Enter your message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => {
@@ -331,7 +331,7 @@ const ChatComponent = ({ user, onLogout }) => {
               cursor: 'pointer'
             }}
           >
-            전송
+            Send
           </button>
         </div>
       </div>
@@ -362,7 +362,7 @@ const ChatComponent = ({ user, onLogout }) => {
             © 2025 Concrete Lab — All rights reserved. v1.0.3
           </small>
           <small style={{ display: 'block', marginTop: '0.25rem' }}>
-            현재 접속자: 익명 사용자들
+            Current users: Anonymous users
           </small>
         </div>
       </footer>
