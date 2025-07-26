@@ -196,3 +196,30 @@ body {
 .gate-button:hover {
   background-color: #2ea043;
 }
+.html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-gate {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  background-color: #0d1117;
+  box-sizing: border-box;
+}
+
+footer {
+  margin-top: auto;
+  padding: 0.5rem 0;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.75rem;
+  background-color: #0d1117;
+}
