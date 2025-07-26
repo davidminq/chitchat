@@ -171,8 +171,9 @@ body {
   max-width: 400px;
   width: 100%;
   transform: translateY(-30px);
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 160px);
   overflow-y: auto;
+  padding-bottom: 2rem;
 }
 
 .auth-gate h1 {
@@ -222,4 +223,16 @@ footer {
   font-size: 0.75rem;
   background-color: #0d1117;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .auth-container {
+    max-height: calc(100vh - 140px);
+    padding: 0 1rem 3rem 1rem;
+    transform: translateY(-20px);
+  }
+  
+  .auth-gate {
+    padding-bottom: 100px;
+  }
 }

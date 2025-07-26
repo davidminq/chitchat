@@ -205,7 +205,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
 
             {/* Demo Mode Button */}
             {onGuestMode && (
-              <div style={{ marginTop: '4rem', marginBottom: '12rem', textAlign: 'center', paddingBottom: '4rem' }}>
+              <div style={{ marginTop: '2rem', marginBottom: '6rem', textAlign: 'center', paddingBottom: '2rem' }}>
                 <button 
                   onClick={onGuestMode}
                   style={{
