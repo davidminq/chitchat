@@ -76,7 +76,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
 
   return (
     <>
-      <div className="auth-gate">
+      <div className="auth-gate" style={{ flex: 1 }}>
         <div className="auth-container">
           <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
             <h1 style={{ 
@@ -205,7 +205,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
 
             {/* Demo Mode Button */}
             {onGuestMode && (
-              <div style={{ marginTop: '4rem', marginBottom: '8rem', textAlign: 'center' }}>
+              <div style={{ marginTop: '4rem', marginBottom: '12rem', textAlign: 'center', paddingBottom: '4rem' }}>
                 <button 
                   onClick={onGuestMode}
                   style={{
@@ -237,8 +237,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
         </div>
       </div>
       <footer className="chat-footer" style={{
-        marginTop: 'auto',
-        width: '100vw',
+        width: '100%',
         padding: '1rem 0',
         backgroundColor: 'transparent',
         textAlign: 'center'

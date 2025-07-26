@@ -95,7 +95,7 @@ function App() {
   }
 
   return (
-    <div style={{ backgroundColor: '#000' }}>
+    <div style={{ backgroundColor: '#000', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {user ? (
         <ChatComponent user={user} onLogout={handleLogout} />
       ) : (
