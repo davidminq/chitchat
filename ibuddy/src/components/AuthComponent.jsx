@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { signInWithEmail, createUserWithEmail } from '../firebase';
 import { generateRandomNickname } from '../utils/nickname';
 import { createUserProfile, getUserProfile } from '../utils/userManagement';
 
@@ -20,9 +19,13 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
       let userCredential;
       
       if (isLogin) {
-        userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const result = await signInWithEmail(email, password);
+        if (!result.success) throw new Error(result.error);
+        userCredential = { user: result.user };
       } else {
-        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const result = await createUserWithEmail(email, password);
+        if (!result.success) throw new Error(result.error);
+        userCredential = { user: result.user };
         
         // 회원가입 시 사용자 프로필 생성
         const nickname = generateRandomNickname();
@@ -73,15 +76,21 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
 
   return (
     <div className="auth-gate" style={{ 
-      padding: '1rem', 
+      padding: '1rem',
+      paddingBottom: '6rem', // 풋터 공간 확보
       textAlign: 'center',
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100vh',
-      justifyContent: 'space-between'
+      position: 'relative'
     }}>
-      <div>
-        <h1 style={{ marginTop: '2rem' }}>ibuddy</h1>
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ 
+          marginTop: '2rem',
+          color: '#58a6ff',
+          fontSize: '2.5rem',
+          fontWeight: 'bold'
+        }}>ibuddy</h1>
       </div>
       
       <div className="side-section" style={{ 
@@ -91,10 +100,11 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
       }}>
         {/* Email/Password Form */}
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '2rem', width: '100%' }}>
           <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
             <button
               onClick={() => setIsLogin(true)}
@@ -105,7 +115,8 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                 padding: '0.5rem 1rem',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
+                minWidth: '80px'
               }}
             >
               로그인
@@ -119,14 +130,15 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                 padding: '0.5rem 1rem',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
+                minWidth: '80px'
               }}
             >
               회원가입
             </button>
           </div>
 
-          <form onSubmit={handleEmailAuth} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <form onSubmit={handleEmailAuth} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
             <input
               type="email"
               placeholder="이메일"
@@ -138,7 +150,9 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                 border: '1px solid #444',
                 backgroundColor: '#1a1a1a',
                 color: 'white',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                width: '100%',
+                boxSizing: 'border-box'
               }}
             />
             <input
@@ -152,7 +166,9 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                 border: '1px solid #444',
                 backgroundColor: '#1a1a1a',
                 color: 'white',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                width: '100%',
+                boxSizing: 'border-box'
               }}
             />
             <button
@@ -166,7 +182,8 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                 borderRadius: '8px',
                 fontSize: '1rem',
                 cursor: loading || !email || !password ? 'not-allowed' : 'pointer',
-                fontWeight: '500'
+                fontWeight: '500',
+                width: '100%'
               }}
             >
               {loading ? '처리 중...' : (isLogin ? '로그인' : '회원가입')}
@@ -192,11 +209,12 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
           justifyContent: 'center',
           gap: '1rem', 
           marginBottom: '2rem',
-          width: '100%'
+          width: '100%',
+          maxWidth: '320px'
         }}>
-          <img src="./sso/apple.svg" alt="Apple" style={{ width: '320px', height: '48px', cursor: 'pointer' }} />
-          <img src="./sso/google.svg" alt="Google" style={{ width: '320px', height: '48px', cursor: 'pointer' }} />
-          <img src="./sso/fb.svg" alt="Facebook" style={{ width: '320px', height: '48px', cursor: 'pointer' }} />
+          <img src="./sso/apple.svg" alt="Apple" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
+          <img src="./sso/google.svg" alt="Google" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
+          <img src="./sso/fb.svg" alt="Facebook" style={{ width: '100%', maxWidth: '320px', height: '48px', cursor: 'pointer' }} />
         </div>
 
         {/* Demo Mode Button */}
@@ -232,6 +250,10 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
       </div>
 
       <footer className="chat-footer" style={{
+        position: 'absolute',
+        bottom: '0',
+        left: '0',
+        right: '0',
         padding: '1rem 0',
         backgroundColor: 'transparent',
         textAlign: 'center'

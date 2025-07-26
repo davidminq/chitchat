@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react'
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth, isFirebaseConfigured } from './firebase';
 import AuthComponent from './components/AuthComponent';
 import ChatComponent from './components/ChatComponent';
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [guestMode, setGuestMode] = useState(false);
 
   useEffect(() => {
     // Firebase 설정 확인 - placeholder 값이면 게스트 모드로 설정
-    if (auth.app.options.apiKey === "your-api-key") {
+    if (!isFirebaseConfigured()) {
       console.log('Firebase not configured, enabling guest mode');
-      setGuestMode(true);
       setLoading(false);
       return;
     }
