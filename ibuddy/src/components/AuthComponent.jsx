@@ -1,217 +1,203 @@
 import { useState } from 'react';
-import { signInWithPopup, signInAnonymously } from 'firebase/auth';
-import { auth, googleProvider, appleProvider } from '../firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 import { generateRandomNickname } from '../utils/nickname';
 import { createUserProfile, getUserProfile } from '../utils/userManagement';
-import appleIcon from '../assets/icons/btn_apple.svg';
-import googleIcon from '../assets/icons/btn_google.svg';
 
 const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
 
-  const handleGoogleLogin = async () => {
+  const handleEmailAuth = async (e) => {
+    e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
+      let userCredential;
       
-      // Check if user profile exists, if not create one
-      let userProfile = await getUserProfile(user.uid);
-      
-      if (!userProfile) {
+      if (isLogin) {
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        
+        // 회원가입 시 사용자 프로필 생성
         const nickname = generateRandomNickname();
-        userProfile = await createUserProfile(user.uid, {
+        await createUserProfile(userCredential.user.uid, {
+          email: userCredential.user.email,
           nickname: nickname,
-          email: user.email,
-          isAnonymous: false,
-          loginMethod: 'google'
+          loginMethod: 'email'
         });
       }
-      
-      onAuthSuccess(userProfile);
-    } catch (error) {
-      console.error('Google login error:', error);
-      setError('구글 로그인에 실패했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const handleAppleLogin = async () => {
-    setLoading(true);
-    setError('');
-    
-    try {
-      const result = await signInWithPopup(auth, appleProvider);
-      const user = result.user;
+      // 사용자 프로필 정보 가져오기
+      const userProfile = await getUserProfile(userCredential.user.uid);
       
-      let userProfile = await getUserProfile(user.uid);
+      onAuthSuccess({
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        nickname: userProfile?.nickname || generateRandomNickname(),
+        isAnonymous: false,
+        loginMethod: 'email'
+      });
+
+    } catch (error) {
+      console.error('Email auth error:', error);
       
-      if (!userProfile) {
-        const nickname = generateRandomNickname();
-        userProfile = await createUserProfile(user.uid, {
-          nickname: nickname,
-          email: user.email,
-          isAnonymous: false,
-          loginMethod: 'apple'
-        });
+      let errorMessage = '인증 중 오류가 발생했습니다.';
+      
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = '등록되지 않은 이메일입니다.';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = '잘못된 비밀번호입니다.';
+      } else if (error.code === 'auth/email-already-in-use') {
+        errorMessage = '이미 사용 중인 이메일입니다.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = '비밀번호가 너무 약합니다. (최소 6자 이상)';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = '유효하지 않은 이메일 형식입니다.';
       }
       
-      onAuthSuccess(userProfile);
-    } catch (error) {
-      console.error('Apple login error:', error);
-      setError('애플 로그인에 실패했습니다.');
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleKakaoLogin = async () => {
-    setLoading(true);
-    setError('');
-    
-    try {
-      // 카카오 로그인은 현재 구현되지 않음
-      setError('카카오 로그인은 준비 중입니다.');
-    } catch (error) {
-      console.error('Kakao login error:', error);
-      setError('카카오 로그인에 실패했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const handleGuestLogin = async () => {
-    setLoading(true);
-    setError('');
-    
-    try {
-      const result = await signInAnonymously(auth);
-      const user = result.user;
-      
-      let userProfile = await getUserProfile(user.uid);
-      
-      if (!userProfile) {
-        const nickname = generateRandomNickname();
-        userProfile = await createUserProfile(user.uid, {
-          nickname: nickname,
-          email: null,
-          isAnonymous: true,
-          loginMethod: 'guest'
-        });
-      }
-      
-      onAuthSuccess(userProfile);
-    } catch (error) {
-      console.error('Guest login error:', error);
-      setError('게스트 로그인에 실패했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
+
+
 
   return (
-    <div className="auth-gate" style={{ padding: '1rem', textAlign: 'center' }}>
-      <h1>ibuddy</h1>
-      <div className="side-section" style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }}>
-        
-        {/* Social Login Options */}
-        <div className="social-login" style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <p style={{ marginBottom: '0.8rem', color: '#ccc' }}>소셜 계정으로 로그인</p>
-          
-          {error && (
-            <div style={{ color: '#ff4444', marginBottom: '1rem', fontSize: '0.9rem' }}>
-              {error}
-            </div>
-          )}
-          
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: '0.8rem', padding: '0 1rem' }}>
-            {/* Google 로그인 */}
-            <button 
-              onClick={handleGoogleLogin}
-              disabled={loading}
-              style={{ 
-                backgroundColor: 'white', 
-                color: '#333', 
-                padding: '0.8rem 1rem', 
-                borderRadius: '8px', 
-                border: '1px solid #ddd', 
-                cursor: loading ? 'not-allowed' : 'pointer', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                fontWeight: '500',
-                fontSize: '0.95rem',
-                opacity: loading ? 0.7 : 1,
-                transition: 'all 0.2s ease',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+    <div className="auth-gate" style={{ 
+      padding: '1rem', 
+      textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',
+      justifyContent: 'space-between'
+    }}>
+      <div>
+        <h1 style={{ marginTop: '2rem' }}>ibuddy</h1>
+      </div>
+      
+      <div className="side-section" style={{ 
+        width: '100%', 
+        maxWidth: '400px', 
+        margin: '0 auto',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
+      }}>
+        {/* Email/Password Form */}
+        <div style={{ marginBottom: '2rem' }}>
+          <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+            <button
+              onClick={() => setIsLogin(true)}
+              style={{
+                backgroundColor: isLogin ? '#58a6ff' : 'transparent',
+                color: isLogin ? 'white' : '#58a6ff',
+                border: '1px solid #58a6ff',
+                padding: '0.5rem 1rem',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '0.9rem'
               }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#f8f9fa'}
-              onMouseOut={(e) => e.target.style.backgroundColor = 'white'}
             >
-              <img src={googleIcon} alt="Google" style={{ width: '20px', height: '20px', marginRight: '12px', objectFit: 'contain' }} />
-              {loading ? '로그인 중...' : 'Continue with Google'}
+              로그인
             </button>
-            
-            {/* Apple 로그인 */}
-            <button 
-              onClick={handleAppleLogin}
-              disabled={loading}
-              style={{ 
-                backgroundColor: '#000', 
-                color: 'white', 
-                padding: '0.8rem 1rem', 
-                borderRadius: '8px', 
-                border: 'none', 
-                cursor: loading ? 'not-allowed' : 'pointer', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                fontWeight: '500',
-                fontSize: '0.95rem',
-                opacity: loading ? 0.7 : 1,
-                transition: 'all 0.2s ease',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+            <button
+              onClick={() => setIsLogin(false)}
+              style={{
+                backgroundColor: !isLogin ? '#58a6ff' : 'transparent',
+                color: !isLogin ? 'white' : '#58a6ff',
+                border: '1px solid #58a6ff',
+                padding: '0.5rem 1rem',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '0.9rem'
               }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#333'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#000'}
             >
-              <img src={appleIcon} alt="Apple" style={{ width: '20px', height: '20px', marginRight: '12px', objectFit: 'contain', filter: 'invert(1)' }} />
-              {loading ? '로그인 중...' : 'Continue with Apple'}
-            </button>
-
-            {/* 카카오 로그인 */}
-            <button 
-              onClick={handleKakaoLogin}
-              disabled={loading}
-              style={{ 
-                backgroundColor: '#FEE500', 
-                color: '#000', 
-                padding: '0.8rem 1rem', 
-                borderRadius: '8px', 
-                border: 'none', 
-                cursor: loading ? 'not-allowed' : 'pointer', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                fontWeight: '500',
-                fontSize: '0.95rem',
-                opacity: loading ? 0.7 : 1,
-                transition: 'all 0.2s ease',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-              }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#FFD700'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#FEE500'}
-            >
-              <span style={{ fontSize: '20px', marginRight: '12px' }}>💬</span>
-              {loading ? '로그인 중...' : '카카오로 계속하기'}
+              회원가입
             </button>
           </div>
+
+          <form onSubmit={handleEmailAuth} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <input
+              type="email"
+              placeholder="이메일"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{
+                padding: '0.8rem',
+                borderRadius: '8px',
+                border: '1px solid #444',
+                backgroundColor: '#1a1a1a',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+            <input
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{
+                padding: '0.8rem',
+                borderRadius: '8px',
+                border: '1px solid #444',
+                backgroundColor: '#1a1a1a',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+            <button
+              type="submit"
+              disabled={loading || !email || !password}
+              style={{
+                backgroundColor: loading || !email || !password ? '#333' : '#58a6ff',
+                color: 'white',
+                padding: '0.8rem',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '1rem',
+                cursor: loading || !email || !password ? 'not-allowed' : 'pointer',
+                fontWeight: '500'
+              }}
+            >
+              {loading ? '처리 중...' : (isLogin ? '로그인' : '회원가입')}
+            </button>
+          </form>
+
+          {error && (
+            <p style={{ color: '#ff6b6b', textAlign: 'center', marginTop: '1rem', fontSize: '0.9rem' }}>
+              {error}
+            </p>
+          )}
         </div>
 
+        <div style={{ textAlign: 'center', margin: '1rem 0', color: '#666' }}>
+          또는
+        </div>
+
+        {/* SSO Buttons */}
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          gap: '1rem', 
+          marginBottom: '2rem',
+          width: '100%'
+        }}>
+          <img src="./sso/apple.svg" alt="Apple" style={{ width: '320px', height: '48px', cursor: 'pointer' }} />
+          <img src="./sso/google.svg" alt="Google" style={{ width: '320px', height: '48px', cursor: 'pointer' }} />
+          <img src="./sso/fb.svg" alt="Facebook" style={{ width: '320px', height: '48px', cursor: 'pointer' }} />
+        </div>
 
         {/* Demo Mode Button */}
         {onGuestMode && (
@@ -243,30 +229,30 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
           </div>
         )}
 
-        <footer className="chat-footer" style={{
-          marginTop: '4rem',
-          padding: '1rem 0',
-          backgroundColor: 'transparent',
-          textAlign: 'center'
-        }}>
-          <div className="footer-meta" style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '0.75rem',
-            color: '#bbb',
-            gap: '0.3rem'
-          }}>
-            <small style={{ display: 'block' }}>
-              © 2025 Concrete Lab — All rights reserved. v1.0.3
-            </small>
-            <small style={{ display: 'block', marginTop: '0.25rem' }}>
-              현재 접속자: 익명 사용자들
-            </small>
-          </div>
-        </footer>
       </div>
+
+      <footer className="chat-footer" style={{
+        padding: '1rem 0',
+        backgroundColor: 'transparent',
+        textAlign: 'center'
+      }}>
+        <div className="footer-meta" style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '0.75rem',
+          color: '#bbb',
+          gap: '0.3rem'
+        }}>
+          <small style={{ display: 'block' }}>
+            © 2025 Concrete Lab — All rights reserved. v1.0.3
+          </small>
+          <small style={{ display: 'block', marginTop: '0.25rem' }}>
+            현재 접속자: 익명 사용자들
+          </small>
+        </div>
+      </footer>
     </div>
   );
 };

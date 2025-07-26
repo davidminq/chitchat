@@ -193,9 +193,11 @@ const ChatComponent = ({ user, onLogout }) => {
       maxWidth: '1200px',
       margin: '0 auto',
       padding: '1rem',
+      paddingBottom: '120px',
       boxSizing: 'border-box',
-      height: '100vh',
-      alignItems: 'center'
+      minHeight: '100vh',
+      alignItems: 'center',
+      position: 'relative'
     }}>
       {/* Header */}
       <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -336,10 +338,16 @@ const ChatComponent = ({ user, onLogout }) => {
 
       {/* Footer */}
       <footer className="chat-footer" style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
         width: '100%',
         padding: '1rem 0',
-        backgroundColor: 'transparent',
-        textAlign: 'center'
+        backgroundColor: '#000',
+        textAlign: 'center',
+        zIndex: 1000,
+        borderTop: '1px solid #333'
       }}>
         <div className="footer-meta" style={{
           display: 'flex',
