@@ -256,11 +256,11 @@ const ChatComponent = ({ user, onLogout }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '0.8rem 1rem',
+        padding: '0.5rem 1rem',
         backgroundColor: '#161b22',
         borderBottom: '1px solid #21262d',
         flexShrink: 0,
-        minHeight: '60px',
+        minHeight: '50px',
         zIndex: 1000
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -444,66 +444,78 @@ const ChatComponent = ({ user, onLogout }) => {
       </div>
 
       {/* Input Area - Fixed */}
-      <div className="chat-input" style={{ 
-        padding: '1rem',
-        backgroundColor: '#161b22',
-        borderTop: '1px solid #21262d',
-        flexShrink: 0,
-        minHeight: '80px',
-        zIndex: 1000,
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center',
+        backgroundColor: showWarnings ? '#2f2f2f' : '#2f2f2f',
+        borderRadius: '24px',
+        border: 'none',
+        padding: '0.4rem 1rem',
+        minHeight: '52px',
+        margin: '0.75rem',
         position: 'sticky',
-        bottom: 0
+        bottom: '0.5rem',
+        zIndex: 1000,
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+        backgroundClip: 'padding-box',
+        WebkitBackgroundClip: 'padding-box'
       }}>
-        <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'flex-end' }}>
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder={showWarnings ? "Please acknowledge safety warnings first..." : "Type your message..."}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                if (!showWarnings) handleSend();
-              }
-            }}
-            disabled={showWarnings}
-            style={{ 
-              flex: 1,
-              padding: '0.8rem 1rem',
-              backgroundColor: showWarnings ? '#21262d' : '#0d1117',
-              color: showWarnings ? '#8b949e' : '#f0f6fc',
-              border: '1px solid #21262d',
-              borderRadius: '8px',
-              fontSize: '0.95rem',
-              outline: 'none',
-              cursor: showWarnings ? 'not-allowed' : 'text'
-            }}
-          />
-          <button
-            onClick={handleSend}
-            disabled={showWarnings}
-            style={{
-              padding: '0.8rem 1.5rem',
-              backgroundColor: showWarnings ? '#21262d' : '#238636',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: showWarnings ? 'not-allowed' : 'pointer',
-              fontSize: '0.9rem',
-              fontWeight: '500',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseOver={(e) => {
-              if (!showWarnings) e.target.style.backgroundColor = '#2ea043';
-            }}
-            onMouseOut={(e) => {
-              if (!showWarnings) e.target.style.backgroundColor = '#238636';
-            }}
-          >
-            Send
-          </button>
-        </div>
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder={showWarnings ? "Please acknowledge safety warnings first..." : "Message ibuddy"}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              if (!showWarnings) handleSend();
+            }
+          }}
+          disabled={showWarnings}
+          style={{ 
+            flex: 1,
+            padding: '0.5rem 0.5rem',
+            backgroundColor: 'transparent',
+            color: showWarnings ? '#8b949e' : '#ececf1',
+            border: 'none',
+            borderRadius: '0',
+            fontSize: '1rem',
+            outline: 'none',
+            cursor: showWarnings ? 'not-allowed' : 'text',
+            resize: 'none',
+            fontFamily: 'inherit'
+          }}
+        />
+        <button
+          onClick={handleSend}
+          disabled={showWarnings || !input.trim()}
+          style={{
+            padding: '0.4rem',
+            backgroundColor: (showWarnings || !input.trim()) ? '#565869' : '#19c37d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '20px',
+            cursor: (showWarnings || !input.trim()) ? 'not-allowed' : 'pointer',
+            fontSize: '1rem',
+            fontWeight: '600',
+            transition: 'all 0.2s ease',
+            minWidth: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginLeft: '0.5rem'
+          }}
+          onMouseOver={(e) => {
+            if (!showWarnings && input.trim()) e.target.style.backgroundColor = '#0fa968';
+          }}
+          onMouseOut={(e) => {
+            if (!showWarnings && input.trim()) e.target.style.backgroundColor = '#19c37d';
+          }}
+        >
+          ↑
+        </button>
       </div>
     </div>
   );
