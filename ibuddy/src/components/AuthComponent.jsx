@@ -256,7 +256,8 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                     fontWeight: 'bold',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.5rem'
+                    gap: '0.5rem',
+                    transform: 'translateY(-1px)'
                   }}>
                     <span style={{ 
                       width: '8px', 

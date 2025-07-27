@@ -22,7 +22,7 @@ const ChatComponent = ({ user, onLogout }) => {
   // Safety warning messages
   const warningMessages = [
     "[⚠️ IMPERSONATION WARNING] Anyone claiming to be an administrator or cyber investigation officer is an imposter.",
-    "[⚠️ SCAM WARNING] Anyone sharing Telegram / WhatsApp / Email without conversation is a scammer.",
+    "[⚠️ SCAM WARNING] Anyone sharing Telegram / WhatsApp / LINE / WeChat without conversation is a scammer.",
     "[⚠️ SCAM WARNING] All adult web site promotions are scams.",
   ];
 
@@ -325,9 +325,11 @@ const ChatComponent = ({ user, onLogout }) => {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#1e1e1e',
-        padding: '2rem',
+        padding: '1rem',
         borderRadius: '12px',
-        minHeight: '80vh'
+        minHeight: '0',
+        height: 'calc(100vh - 200px)', // Fixed height for mobile
+        position: 'relative'
       }}>
         <div 
           ref={chatWindowRef}
@@ -335,8 +337,12 @@ const ChatComponent = ({ user, onLogout }) => {
           style={{ 
             flex: 1,
             overflowY: 'auto',
+            overflowX: 'hidden',
             marginBottom: '1rem',
-            minHeight: 0
+            minHeight: 0,
+            WebkitOverflowScrolling: 'touch', // iOS smooth scrolling
+            maxHeight: 'calc(100vh - 300px)', // Ensure proper height on mobile
+            paddingBottom: '80px' // Space for input controls
           }}
         >
           {/* Safety Warning Messages */}
@@ -430,10 +436,12 @@ const ChatComponent = ({ user, onLogout }) => {
         <div className="chat-controls" style={{ 
           display: 'flex', 
           gap: '0.5rem',
-          position: 'sticky',
+          position: 'absolute',
           bottom: '1rem',
+          left: '1rem',
+          right: '1rem',
           backgroundColor: '#1e1e1e',
-          padding: '1rem 0',
+          padding: '0.5rem 0',
           zIndex: 100
         }}>
           <input
