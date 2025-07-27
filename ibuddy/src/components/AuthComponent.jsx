@@ -103,7 +103,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
         
           <div className="side-section">
             {/* Email/Password Form */}
-            <div style={{ marginBottom: '2rem', width: '100%' }}>
+            <div style={{ marginBottom: '1rem', width: '100%' }}>
               <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                 <button
                   onClick={() => setIsLogin(true)}
@@ -196,7 +196,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
               )}
             </div>
 
-            <div style={{ textAlign: 'center', margin: '1rem 0', color: '#666' }}>
+            <div style={{ textAlign: 'center', margin: '0.5rem 0', color: '#666' }}>
               or
             </div>
 
@@ -206,8 +206,8 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
               flexDirection: 'column', 
               alignItems: 'center', 
               justifyContent: 'center',
-              gap: '1rem', 
-              marginBottom: '2rem',
+              gap: '0.8rem', 
+              marginBottom: '1rem',
               width: '100%',
               maxWidth: '320px',
               margin: '0 auto'
@@ -219,7 +219,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
 
             {/* Demo Mode Button */}
             {onGuestMode && (
-              <div style={{ marginTop: '2rem', marginBottom: '3rem', textAlign: 'center', paddingBottom: '2rem' }}>
+              <div style={{ marginTop: '1rem', marginBottom: '1.5rem', textAlign: 'center', paddingBottom: '1rem' }}>
                 <button 
                   onClick={onGuestMode}
                   style={{
@@ -246,7 +246,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                 </button>
                 
                 {/* Online Users Counter */}
-                <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ marginTop: '0.5rem', display: 'flex', justifyContent: 'center' }}>
                   <div style={{
                     backgroundColor: '#58a6ff',
                     color: 'white',
@@ -257,7 +257,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    transform: 'translateY(-1px)'
+                    transform: 'translateY(0px)'
                   }}>
                     <span style={{ 
                       width: '8px', 
