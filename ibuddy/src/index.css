@@ -177,8 +177,11 @@ body {
   box-sizing: border-box;
   background-color: #0d1117;
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
-  padding-top: 10vh;
+  padding: 2vh 1rem 3vh 1rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .auth-container {
@@ -186,7 +189,8 @@ body {
   margin-right: auto;
   max-width: 400px;
   width: 100%;
-  padding-bottom: 5vh;
+  padding: 0;
+  flex-shrink: 0;
 }
 
 .auth-gate h1 {
@@ -239,12 +243,33 @@ footer {
 }
 
 @media (max-width: 768px) {
-  .auth-container {
-    padding: 0 1rem 3vh 1rem;
+  .auth-gate {
+    padding: 1vh 0.5rem 2vh 0.5rem;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
   }
   
+  .auth-container {
+    padding: 0;
+    margin-top: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* iPhone 특화 최적화 */
+@supports (-webkit-touch-callout: none) {
   .auth-gate {
-    padding-top: 5vh;
-    padding-bottom: 3vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  @media (max-width: 768px) {
+    .auth-gate {
+      padding-top: max(1vh, env(safe-area-inset-top, 20px));
+      padding-bottom: max(2vh, env(safe-area-inset-bottom, 20px));
+    }
   }
 }
