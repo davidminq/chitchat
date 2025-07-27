@@ -35,6 +35,13 @@ body {
   /* iOS Safari viewport fix */
   height: 100vh;
   height: -webkit-fill-available;
+  /* Enhanced mobile keyboard support */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @keyframes pulse {
