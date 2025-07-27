@@ -13,7 +13,6 @@ const ChatComponent = ({ user, onLogout }) => {
   const [chatRoomId, setChatRoomId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
   const [onlineUsers, setOnlineUsers] = useState(0);
   const [showWarnings, setShowWarnings] = useState(true);
   const chatWindowRef = useRef(null);
@@ -104,12 +103,8 @@ const ChatComponent = ({ user, onLogout }) => {
     return () => clearInterval(cleanupInterval);
   }, [chatRoomId]);
 
-  // Handle viewport height changes for mobile keyboard
+  // Handle mobile keyboard focus
   useEffect(() => {
-    const handleResize = () => {
-      setViewportHeight(window.innerHeight);
-    };
-
     const handleFocus = () => {
       setTimeout(() => {
         if (inputRef.current) {
@@ -118,13 +113,11 @@ const ChatComponent = ({ user, onLogout }) => {
       }, 300);
     };
 
-    window.addEventListener('resize', handleResize);
     if (inputRef.current) {
       inputRef.current.addEventListener('focus', handleFocus);
     }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
       if (inputRef.current) {
         inputRef.current.removeEventListener('focus', handleFocus);
       }
@@ -245,54 +238,43 @@ const ChatComponent = ({ user, onLogout }) => {
   }
 
   return (
-    <div className="main-layout" style={{
+    <div className="chat-layout" style={{
       display: 'flex',
       flexDirection: 'column',
-      maxWidth: '1400px',
-      width: '95%',
-      margin: '0 auto',
-      padding: '1rem',
-      boxSizing: 'border-box',
-      height: `${viewportHeight}px`,
-      alignItems: 'center',
-      position: 'relative'
+      height: '100vh',
+      width: '100%',
+      backgroundColor: '#0d1117'
     }}>
-      {/* Header */}
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0, color: 'white' }}>
+      {/* Header - Fixed */}
+      <div className="chat-header" style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '1rem 2rem',
+        backgroundColor: '#161b22',
+        borderBottom: '1px solid #21262d',
+        flexShrink: 0
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <h2 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}>
             {user.nickname}
             {user.isBlueCheck && (
               <img src={blueCheckMarkIcon} alt="Blue Check" style={{ width: '18px', height: '18px', marginLeft: '8px' }} />
             )}
           </h2>
-          <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>
-            Anonymous chat within 1km radius
-          </p>
-        </div>
-        
-        {/* Online Users Counter */}
-        <div style={{ 
-          flex: 1, 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          flexDirection: 'column'
-        }}>
           <div style={{
             backgroundColor: '#58a6ff',
             color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '20px',
-            fontSize: '0.9rem',
-            fontWeight: 'bold',
+            padding: '0.3rem 0.8rem',
+            borderRadius: '12px',
+            fontSize: '0.8rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem'
+            gap: '0.4rem'
           }}>
             <span style={{ 
-              width: '8px', 
-              height: '8px', 
+              width: '6px', 
+              height: '6px', 
               backgroundColor: '#00ff00', 
               borderRadius: '50%',
               animation: 'pulse 2s infinite'
@@ -300,155 +282,168 @@ const ChatComponent = ({ user, onLogout }) => {
             {onlineUsers} online
           </div>
         </div>
-
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-          <button 
-            onClick={onLogout}
-            style={{
-              padding: '0.5rem 1rem',
-              backgroundColor: '#ff4444',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-
-      {/* Chat Section */}
-      <div className="chat-section" style={{
-        flex: 1,
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#1e1e1e',
-        padding: '1rem',
-        borderRadius: '12px',
-        minHeight: '0',
-        height: 'calc(100vh - 200px)', // Fixed height for mobile
-        position: 'relative'
-      }}>
-        <div 
-          ref={chatWindowRef}
-          className="chat-window" 
-          style={{ 
-            flex: 1,
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            marginBottom: '1rem',
-            minHeight: 0,
-            WebkitOverflowScrolling: 'touch', // iOS smooth scrolling
-            maxHeight: 'calc(100vh - 300px)', // Ensure proper height on mobile
-            paddingBottom: '80px' // Space for input controls
+        
+        <button 
+          onClick={onLogout}
+          style={{
+            padding: '0.5rem 1rem',
+            backgroundColor: '#ff4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '0.9rem'
           }}
         >
-          {/* Safety Warning Messages */}
-          {showWarnings && (
-            <div style={{ marginBottom: '2rem' }}>
-              {warningMessages.map((warning, index) => (
-                <div 
-                  key={index}
-                  style={{
-                    backgroundColor: '#ff4444',
-                    color: 'white',
-                    padding: '0.8rem',
-                    borderRadius: '8px',
-                    marginBottom: '0.5rem',
-                    fontWeight: 'normal',
-                    fontSize: '0.9rem',
-                    textAlign: 'center',
-                    border: '2px solid #cc0000'
-                  }}
-                >
-                  {warning}
-                </div>
-              ))}
-              <button
-                onClick={() => setShowWarnings(false)}
+          Logout
+        </button>
+      </div>
+
+      {/* Chat Messages Area - Flex Grow with Scroll */}
+      <div 
+        ref={chatWindowRef}
+        className="chat-messages" 
+        style={{ 
+          flexGrow: 1,
+          overflowY: 'auto',
+          padding: '1rem 2rem',
+          backgroundColor: '#0d1117',
+          WebkitOverflowScrolling: 'touch'
+        }}
+      >
+        {/* Safety Warning Messages */}
+        {showWarnings && (
+          <div style={{ marginBottom: '2rem' }}>
+            {warningMessages.map((warning, index) => (
+              <div 
+                key={index}
                 style={{
-                  backgroundColor: 'white',
-                  color: 'black',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  display: 'block',
-                  margin: '1rem auto 0',
-                  fontSize: '0.8rem'
+                  backgroundColor: '#ff4444',
+                  color: 'white',
+                  padding: '1rem',
+                  borderRadius: '8px',
+                  marginBottom: '0.8rem',
+                  fontWeight: 'normal',
+                  fontSize: '0.9rem',
+                  textAlign: 'center',
+                  border: '2px solid #cc0000'
                 }}
               >
-                ✓ I understand, hide warnings
-              </button>
-            </div>
-          )}
-          
-          {messages.length === 0 ? (
-            <p style={{ color: "#ffffff", textAlign: "center" }}>
-              Start chatting with users within 1km around you!
-            </p>
-          ) : (
-            messages.map(msg => {
-              const nicknameEffect = getNicknameEffect(msg.likeCount || 0);
-              return (
-                <div key={msg.id} className="chat-bubble" style={{ marginBottom: '1rem', padding: '0.5rem', backgroundColor: '#2a2a2a', borderRadius: '8px' }}>
-                  <div className="message-content">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.05rem' }}>
-                        <strong style={{ color: msg.color || '#58a6ff' }}>
-                          {nicknameEffect.effect}{msg.nickname}{nicknameEffect.effect}
-                        </strong>
-                        {msg.isBlueCheck && (
-                          <img src={blueCheckMarkIcon} alt="Blue Check" style={{ width: '16px', height: '16px', marginLeft: '4px' }} />
-                        )}
-                      </span>
-                      <span className="timestamp" style={{ fontSize: '0.7rem', color: '#888' }}>
-                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
-                    <div style={{ margin: '0.5rem 0', color: 'white' }}>{msg.text}</div>
-                    <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.8rem' }}>
-                      <button 
-                        onClick={() => handleLike(msg.id, msg.likeCount || 0)}
-                        style={{ background: 'none', border: 'none', color: '#58a6ff', cursor: 'pointer' }}
-                      >
-                        👍 {msg.likeCount || 0}
-                      </button>
-                      {msg.userId !== user.uid && (
-                        <button 
-                          onClick={() => handleReport(msg.id, msg.userId)}
-                          style={{ background: 'none', border: 'none', color: '#ff4444', cursor: 'pointer' }}
-                        >
-                          Report
-                        </button>
-                      )}
-                    </div>
+                {warning}
+              </div>
+            ))}
+            <button
+              onClick={() => setShowWarnings(false)}
+              style={{
+                backgroundColor: 'white',
+                color: 'black',
+                border: 'none',
+                padding: '0.8rem 1.5rem',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                display: 'block',
+                margin: '1rem auto 0',
+                fontSize: '0.9rem',
+                fontWeight: '500'
+              }}
+            >
+              ✓ I understand, hide warnings
+            </button>
+          </div>
+        )}
+        
+        {messages.length === 0 ? (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100%',
+            color: '#8b949e',
+            fontSize: '1.1rem'
+          }}>
+            Start chatting with users within 1km around you!
+          </div>
+        ) : (
+          messages.map(msg => {
+            const nicknameEffect = getNicknameEffect(msg.likeCount || 0);
+            return (
+              <div key={msg.id} style={{ 
+                marginBottom: '1.5rem',
+                padding: '1rem',
+                backgroundColor: '#161b22',
+                borderRadius: '8px',
+                border: '1px solid #21262d'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <strong style={{ color: msg.color || '#58a6ff', fontSize: '0.95rem' }}>
+                      {nicknameEffect.effect}{msg.nickname}{nicknameEffect.effect}
+                    </strong>
+                    {msg.isBlueCheck && (
+                      <img src={blueCheckMarkIcon} alt="Blue Check" style={{ width: '16px', height: '16px' }} />
+                    )}
                   </div>
+                  <span style={{ fontSize: '0.8rem', color: '#8b949e' }}>
+                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
                 </div>
-              );
-            })
-          )}
-        </div>
+                <div style={{ color: '#f0f6fc', marginBottom: '0.8rem', lineHeight: '1.5' }}>
+                  {msg.text}
+                </div>
+                <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem' }}>
+                  <button 
+                    onClick={() => handleLike(msg.id, msg.likeCount || 0)}
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      color: '#58a6ff', 
+                      cursor: 'pointer',
+                      padding: '0.2rem 0.5rem',
+                      borderRadius: '4px',
+                      transition: 'background-color 0.2s'
+                    }}
+                    onMouseOver={(e) => e.target.style.backgroundColor = '#21262d'}
+                    onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+                  >
+                    👍 {msg.likeCount || 0}
+                  </button>
+                  {msg.userId !== user.uid && (
+                    <button 
+                      onClick={() => handleReport(msg.id, msg.userId)}
+                      style={{ 
+                        background: 'none', 
+                        border: 'none', 
+                        color: '#ff7b72', 
+                        cursor: 'pointer',
+                        padding: '0.2rem 0.5rem',
+                        borderRadius: '4px',
+                        transition: 'background-color 0.2s'
+                      }}
+                      onMouseOver={(e) => e.target.style.backgroundColor = '#21262d'}
+                      onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+                    >
+                      Report
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
 
-        {/* Chat Input */}
-        <div className="chat-controls" style={{ 
-          display: 'flex', 
-          gap: '0.5rem',
-          position: 'absolute',
-          bottom: '1rem',
-          left: '1rem',
-          right: '1rem',
-          backgroundColor: '#1e1e1e',
-          padding: '0.5rem 0',
-          zIndex: 100
-        }}>
+      {/* Input Area - Fixed */}
+      <div className="chat-input" style={{ 
+        padding: '1rem 2rem',
+        backgroundColor: '#161b22',
+        borderTop: '1px solid #21262d',
+        flexShrink: 0
+      }}>
+        <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'flex-end' }}>
           <input
             ref={inputRef}
             type="text"
-            className="message-input"
-            placeholder={showWarnings ? "Please acknowledge safety warnings first..." : "Enter your message..."}
+            placeholder={showWarnings ? "Please acknowledge safety warnings first..." : "Type your message..."}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
@@ -459,35 +454,42 @@ const ChatComponent = ({ user, onLogout }) => {
             }}
             disabled={showWarnings}
             style={{ 
-              flex: 1, 
-              backgroundColor: showWarnings ? '#f0f0f0' : 'white', 
-              color: showWarnings ? '#999' : '#000', 
-              padding: '0.8rem',
-              border: 'none',
+              flex: 1,
+              padding: '0.8rem 1rem',
+              backgroundColor: showWarnings ? '#21262d' : '#0d1117',
+              color: showWarnings ? '#8b949e' : '#f0f6fc',
+              border: '1px solid #21262d',
               borderRadius: '8px',
-              fontSize: '16px', // Prevents zoom on iOS
+              fontSize: '0.95rem',
+              outline: 'none',
               cursor: showWarnings ? 'not-allowed' : 'text'
             }}
           />
           <button
-            className="send-button"
             onClick={handleSend}
             disabled={showWarnings}
             style={{
-              backgroundColor: showWarnings ? '#ccc' : '#58a6ff',
+              padding: '0.8rem 1.5rem',
+              backgroundColor: showWarnings ? '#21262d' : '#238636',
               color: 'white',
-              padding: '0.5rem 1rem',
               border: 'none',
-              borderRadius: '4px',
-              fontWeight: 'bold',
-              cursor: showWarnings ? 'not-allowed' : 'pointer'
+              borderRadius: '8px',
+              cursor: showWarnings ? 'not-allowed' : 'pointer',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseOver={(e) => {
+              if (!showWarnings) e.target.style.backgroundColor = '#2ea043';
+            }}
+            onMouseOut={(e) => {
+              if (!showWarnings) e.target.style.backgroundColor = '#238636';
             }}
           >
             Send
           </button>
         </div>
       </div>
-
     </div>
   );
 };
