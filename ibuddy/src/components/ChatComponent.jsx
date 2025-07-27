@@ -15,24 +15,35 @@ const ChatComponent = ({ user, onLogout }) => {
   const [error, setError] = useState('');
   const [onlineUsers, setOnlineUsers] = useState(0);
   const [showWarnings, setShowWarnings] = useState(true);
+  const [checkedWarnings, setCheckedWarnings] = useState([false, false, false]);
   const chatWindowRef = useRef(null);
   const inputRef = useRef(null);
 
   // Safety warning messages
   const warningMessages = [
     {
-      title: "⚠️ IMPERSONATION WARNING ⚠️",
+      title: "Impersonation Warning",
       text: "Anyone claiming to be an administrator or cyber investigation officer is an imposter."
     },
     {
-      title: "⚠️ SCAM WARNING ⚠️",
-      text: "Anyone sharing Telegram / WhatsApp / LINE / WeChat without conversation is a scammer."
+      title: "Scam Warning",
+      text: "Anyone sharing Telegram / WhatsApp / LINE / WeChat / Kakao without conversation is a scammer."
     },
     {
-      title: "⚠️ SCAM WARNING ⚠️", 
+      title: "Scam Warning", 
       text: "All adult web site promotions are scams."
     }
   ];
+
+  // Check if all warnings are checked
+  const allWarningsChecked = checkedWarnings.every(checked => checked);
+
+  // Handle checkbox change
+  const handleCheckboxChange = (index) => {
+    const newCheckedWarnings = [...checkedWarnings];
+    newCheckedWarnings[index] = !newCheckedWarnings[index];
+    setCheckedWarnings(newCheckedWarnings);
+  };
 
   // Get user location and set up chat room
   useEffect(() => {
@@ -331,59 +342,6 @@ const ChatComponent = ({ user, onLogout }) => {
           paddingBottom: '1rem'
         }}
       >
-        {/* Safety Warning Messages */}
-        {showWarnings && (
-          <div style={{ marginBottom: '2rem' }}>
-            {warningMessages.map((warning, index) => (
-              <div 
-                key={index}
-                style={{
-                  backgroundColor: '#ff4444',
-                  color: 'white',
-                  padding: '1.2rem',
-                  borderRadius: '8px',
-                  marginBottom: '0.8rem',
-                  border: '2px solid #cc0000',
-                  textAlign: 'left'
-                }}
-              >
-                <div style={{
-                  fontSize: '1rem',
-                  fontWeight: 'bold',
-                  marginBottom: '0.5rem',
-                  letterSpacing: '0.5px'
-                }}>
-                  {warning.title}
-                </div>
-                <div style={{
-                  fontSize: '0.9rem',
-                  fontWeight: 'normal',
-                  lineHeight: '1.4',
-                  opacity: '0.95'
-                }}>
-                  {warning.text}
-                </div>
-              </div>
-            ))}
-            <button
-              onClick={() => setShowWarnings(false)}
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: 'none',
-                padding: '0.8rem 1.5rem',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                display: 'block',
-                margin: '1rem auto 0',
-                fontSize: '0.9rem',
-                fontWeight: '500'
-              }}
-            >
-              ✓ I understand, hide warnings
-            </button>
-          </div>
-        )}
         
         {messages.length === 0 ? (
           <div style={{ 
@@ -539,6 +497,160 @@ const ChatComponent = ({ user, onLogout }) => {
           ↑
         </button>
       </div>
+
+      {/* Safety Warning Modal */}
+      {showWarnings && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000,
+          padding: '1rem'
+        }}>
+          <div style={{
+            backgroundColor: 'black',
+            borderRadius: '12px',
+            padding: '1.5rem',
+            maxWidth: '400px',
+            width: '100%',
+            maxHeight: '70vh',
+            overflowY: 'auto',
+            border: '2px solid #ffffff',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+            fontFamily: 'Poppins, sans-serif'
+          }}>
+            <div style={{
+              textAlign: 'center',
+              marginBottom: '1rem'
+            }}>
+              <h2 style={{
+                color: '#ffffff',
+                fontSize: '1.2rem',
+                fontWeight: 'bold',
+                margin: 0,
+                marginBottom: '0.5rem',
+                fontFamily: 'Poppins, sans-serif'
+              }}>
+                DISCLOSURE
+              </h2>
+              <p style={{
+                color: '#cccccc',
+                fontSize: '0.9rem',
+                margin: 0,
+                fontFamily: 'Poppins, sans-serif'
+              }}>
+                Please read these important safety notices before chatting
+              </p>
+            </div>
+
+            {warningMessages.map((warning, index) => (
+              <div 
+                key={index}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '1rem 0',
+                  borderBottom: index < warningMessages.length - 1 ? '1px solid #333333' : 'none',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease'
+                }}
+                onClick={() => handleCheckboxChange(index)}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#2a2a2a'}
+                onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+              >
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '4px',
+                  border: checkedWarnings[index] ? 'none' : '2px solid #666666',
+                  backgroundColor: checkedWarnings[index] ? '#007AFF' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '1rem',
+                  transition: 'all 0.2s ease'
+                }}>
+                  {checkedWarnings[index] && (
+                    <span style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>✓</span>
+                  )}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    fontSize: '0.95rem',
+                    fontWeight: '500',
+                    color: '#ffffff',
+                    lineHeight: '1.3',
+                    fontFamily: 'Poppins, sans-serif'
+                  }}>
+                    {warning.title}
+                  </div>
+                  <div style={{
+                    fontSize: '0.85rem',
+                    fontWeight: 'normal',
+                    lineHeight: '1.4',
+                    color: '#999999',
+                    marginTop: '0.3rem',
+                    fontFamily: 'Poppins, sans-serif'
+                  }}>
+                    {warning.text}
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: '0.8rem',
+                  color: '#FF3B30',
+                  fontWeight: '600',
+                  marginLeft: '0.5rem',
+                  fontFamily: 'Poppins, sans-serif'
+                }}>
+                  (Required)
+                </div>
+              </div>
+            ))}
+
+            <div style={{
+              textAlign: 'center',
+              marginTop: '1.5rem'
+            }}>
+              <button
+                onClick={() => allWarningsChecked && setShowWarnings(false)}
+                disabled={!allWarningsChecked}
+                style={{
+                  backgroundColor: allWarningsChecked ? '#007AFF' : '#333333',
+                  color: 'white',
+                  border: 'none',
+                  padding: '1rem 2rem',
+                  borderRadius: '12px',
+                  cursor: allWarningsChecked ? 'pointer' : 'not-allowed',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  transition: 'all 0.2s',
+                  width: '100%',
+                  opacity: allWarningsChecked ? 1 : 0.5,
+                  fontFamily: 'Poppins, sans-serif'
+                }}
+                onMouseOver={(e) => {
+                  if (allWarningsChecked) {
+                    e.target.style.backgroundColor = '#0056CC';
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (allWarningsChecked) {
+                    e.target.style.backgroundColor = '#007AFF';
+                  }
+                }}
+              >
+                {allWarningsChecked ? 'Agree' : 'Please agree to all items'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
