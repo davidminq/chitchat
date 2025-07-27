@@ -15,8 +15,16 @@ const ChatComponent = ({ user, onLogout }) => {
   const [error, setError] = useState('');
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
   const [onlineUsers, setOnlineUsers] = useState(0);
+  const [showWarnings, setShowWarnings] = useState(true);
   const chatWindowRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Safety warning messages
+  const warningMessages = [
+    "[⚠️ IMPERSONATION WARNING] Anyone claiming to be an administrator or cyber investigation officer is an imposter.",
+    "[⚠️ SCAM WARNING] Anyone sharing Telegram / WhatsApp / Email without conversation is a scammer.",
+    "[⚠️ SCAM WARNING] All adult web site promotions are scams.",
+  ];
 
   // Get user location and set up chat room
   useEffect(() => {
@@ -331,6 +339,46 @@ const ChatComponent = ({ user, onLogout }) => {
             minHeight: 0
           }}
         >
+          {/* Safety Warning Messages */}
+          {showWarnings && (
+            <div style={{ marginBottom: '2rem' }}>
+              {warningMessages.map((warning, index) => (
+                <div 
+                  key={index}
+                  style={{
+                    backgroundColor: '#ff4444',
+                    color: 'white',
+                    padding: '0.8rem',
+                    borderRadius: '8px',
+                    marginBottom: '0.5rem',
+                    fontWeight: 'normal',
+                    fontSize: '0.9rem',
+                    textAlign: 'center',
+                    border: '2px solid #cc0000'
+                  }}
+                >
+                  {warning}
+                </div>
+              ))}
+              <button
+                onClick={() => setShowWarnings(false)}
+                style={{
+                  backgroundColor: 'white',
+                  color: 'black',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  display: 'block',
+                  margin: '1rem auto 0',
+                  fontSize: '0.8rem'
+                }}
+              >
+                ✓ I understand, hide warnings
+              </button>
+            </div>
+          )}
+          
           {messages.length === 0 ? (
             <p style={{ color: "#ffffff", textAlign: "center" }}>
               Start chatting with users within 1km around you!
