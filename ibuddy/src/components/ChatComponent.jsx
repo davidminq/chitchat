@@ -241,19 +241,27 @@ const ChatComponent = ({ user, onLogout }) => {
     <div className="chat-layout" style={{
       display: 'flex',
       flexDirection: 'column',
-      height: '100vh',
+      minHeight: '100vh',
+      minHeight: '100dvh', // Dynamic viewport height for mobile
       width: '100%',
-      backgroundColor: '#0d1117'
+      backgroundColor: '#0d1117',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0
     }}>
       {/* Header - Fixed */}
       <div className="chat-header" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '1rem 2rem',
+        padding: '0.8rem 1rem',
         backgroundColor: '#161b22',
         borderBottom: '1px solid #21262d',
-        flexShrink: 0
+        flexShrink: 0,
+        minHeight: '60px',
+        zIndex: 1000
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <h2 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}>
@@ -304,11 +312,14 @@ const ChatComponent = ({ user, onLogout }) => {
         ref={chatWindowRef}
         className="chat-messages" 
         style={{ 
-          flexGrow: 1,
+          flex: 1,
           overflowY: 'auto',
-          padding: '1rem 2rem',
+          overflowX: 'hidden',
+          padding: '1rem',
           backgroundColor: '#0d1117',
-          WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch',
+          minHeight: 0,
+          paddingBottom: '1rem'
         }}
       >
         {/* Safety Warning Messages */}
@@ -434,10 +445,14 @@ const ChatComponent = ({ user, onLogout }) => {
 
       {/* Input Area - Fixed */}
       <div className="chat-input" style={{ 
-        padding: '1rem 2rem',
+        padding: '1rem',
         backgroundColor: '#161b22',
         borderTop: '1px solid #21262d',
-        flexShrink: 0
+        flexShrink: 0,
+        minHeight: '80px',
+        zIndex: 1000,
+        position: 'sticky',
+        bottom: 0
       }}>
         <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'flex-end' }}>
           <input
