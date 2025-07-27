@@ -440,36 +440,39 @@ const ChatComponent = ({ user, onLogout }) => {
             ref={inputRef}
             type="text"
             className="message-input"
-            placeholder="Enter your message..."
+            placeholder={showWarnings ? "Please acknowledge safety warnings first..." : "Enter your message..."}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
-                handleSend();
+                if (!showWarnings) handleSend();
               }
             }}
+            disabled={showWarnings}
             style={{ 
               flex: 1, 
-              backgroundColor: 'white', 
-              color: '#000', 
+              backgroundColor: showWarnings ? '#f0f0f0' : 'white', 
+              color: showWarnings ? '#999' : '#000', 
               padding: '0.8rem',
               border: 'none',
               borderRadius: '8px',
-              fontSize: '16px' // Prevents zoom on iOS
+              fontSize: '16px', // Prevents zoom on iOS
+              cursor: showWarnings ? 'not-allowed' : 'text'
             }}
           />
           <button
             className="send-button"
             onClick={handleSend}
+            disabled={showWarnings}
             style={{
-              backgroundColor: '#58a6ff',
+              backgroundColor: showWarnings ? '#ccc' : '#58a6ff',
               color: 'white',
               padding: '0.5rem 1rem',
               border: 'none',
               borderRadius: '4px',
               fontWeight: 'bold',
-              cursor: 'pointer'
+              cursor: showWarnings ? 'not-allowed' : 'pointer'
             }}
           >
             Send
@@ -482,3 +485,4 @@ const ChatComponent = ({ user, onLogout }) => {
 };
 
 export default ChatComponent;
+// 🚨 Added red warning messages and auto-scroll behavior to ChatComponent
