@@ -61,12 +61,12 @@ const ChatComponent = ({ user, onLogout }) => {
       });
       setMessages(newMessages);
       
-      // Auto-scroll to bottom
+      // Auto-scroll to bottom when new messages arrive
       setTimeout(() => {
         if (chatWindowRef.current) {
           chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
         }
-      }, 100);
+      }, 50);
     });
 
     return () => unsubscribe();
@@ -157,6 +157,13 @@ const ChatComponent = ({ user, onLogout }) => {
       
       setMessages(prev => [...prev, newMessage]);
       setInput('');
+      
+      // Auto-scroll to bottom after adding local message
+      setTimeout(() => {
+        if (chatWindowRef.current) {
+          chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+        }
+      }, 50);
       return;
     }
 
@@ -388,7 +395,7 @@ const ChatComponent = ({ user, onLogout }) => {
             placeholder="Enter your message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
                 handleSend();
