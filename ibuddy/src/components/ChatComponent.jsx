@@ -123,23 +123,66 @@ const ChatComponent = ({ user, onLogout }) => {
     return () => clearInterval(cleanupInterval);
   }, [chatRoomId]);
 
-  // Handle mobile keyboard focus
+  // Handle mobile keyboard focus - Enhanced for all devices
   useEffect(() => {
     const handleFocus = () => {
+      // Multiple approaches for different devices
       setTimeout(() => {
         if (inputRef.current) {
-          inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          // Method 1: ScrollIntoView with end alignment
+          inputRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'end',
+            inline: 'nearest'
+          });
+        }
+      }, 100);
+      
+      // Method 2: Additional scroll for Android and other devices
+      setTimeout(() => {
+        if (inputRef.current) {
+          const rect = inputRef.current.getBoundingClientRect();
+          const viewportHeight = window.visualViewport?.height || window.innerHeight;
+          const inputBottom = rect.bottom;
+          
+          if (inputBottom > viewportHeight - 50) {
+            window.scrollBy({
+              top: inputBottom - viewportHeight + 100,
+              behavior: 'smooth'
+            });
+          }
         }
       }, 300);
+    };
+
+    const handleResize = () => {
+      // Handle viewport changes (keyboard open/close)
+      setTimeout(() => {
+        if (document.activeElement === inputRef.current) {
+          handleFocus();
+        }
+      }, 100);
     };
 
     if (inputRef.current) {
       inputRef.current.addEventListener('focus', handleFocus);
     }
+    
+    // Listen for viewport changes
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+    } else {
+      window.addEventListener('resize', handleResize);
+    }
 
     return () => {
       if (inputRef.current) {
         inputRef.current.removeEventListener('focus', handleFocus);
+      }
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize);
+      } else {
+        window.removeEventListener('resize', handleResize);
       }
     };
   }, []);
@@ -434,11 +477,13 @@ const ChatComponent = ({ user, onLogout }) => {
         minHeight: '44px',
         margin: '0.5rem 0.75rem',
         position: 'sticky',
-        bottom: '0.5rem',
+        bottom: 'max(0.5rem, env(keyboard-inset-height, 0px))',
         zIndex: 1000,
         boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.03)',
         backgroundClip: 'padding-box',
-        WebkitBackgroundClip: 'padding-box'
+        WebkitBackgroundClip: 'padding-box',
+        transform: 'translateZ(0)',
+        willChange: 'transform'
       }}>
         <input
           ref={inputRef}
@@ -460,7 +505,7 @@ const ChatComponent = ({ user, onLogout }) => {
             color: showWarnings ? '#8b949e' : '#ececf1',
             border: 'none',
             borderRadius: '0',
-            fontSize: '0.95rem',
+            fontSize: '16px',
             outline: 'none',
             cursor: showWarnings ? 'not-allowed' : 'text',
             resize: 'none',
