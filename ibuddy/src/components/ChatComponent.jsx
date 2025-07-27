@@ -20,9 +20,18 @@ const ChatComponent = ({ user, onLogout }) => {
 
   // Safety warning messages
   const warningMessages = [
-    "[⚠️ IMPERSONATION WARNING] Anyone claiming to be an administrator or cyber investigation officer is an imposter.",
-    "[⚠️ SCAM WARNING] Anyone sharing Telegram / WhatsApp / LINE / WeChat without conversation is a scammer.",
-    "[⚠️ SCAM WARNING] All adult web site promotions are scams.",
+    {
+      title: "⚠️ IMPERSONATION WARNING ⚠️",
+      text: "Anyone claiming to be an administrator or cyber investigation officer is an imposter."
+    },
+    {
+      title: "⚠️ SCAM WARNING ⚠️",
+      text: "Anyone sharing Telegram / WhatsApp / LINE / WeChat without conversation is a scammer."
+    },
+    {
+      title: "⚠️ SCAM WARNING ⚠️", 
+      text: "All adult web site promotions are scams."
+    }
   ];
 
   // Get user location and set up chat room
@@ -331,16 +340,29 @@ const ChatComponent = ({ user, onLogout }) => {
                 style={{
                   backgroundColor: '#ff4444',
                   color: 'white',
-                  padding: '1rem',
+                  padding: '1.2rem',
                   borderRadius: '8px',
                   marginBottom: '0.8rem',
-                  fontWeight: 'normal',
-                  fontSize: '0.9rem',
-                  textAlign: 'center',
-                  border: '2px solid #cc0000'
+                  border: '2px solid #cc0000',
+                  textAlign: 'left'
                 }}
               >
-                {warning}
+                <div style={{
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                  marginBottom: '0.5rem',
+                  letterSpacing: '0.5px'
+                }}>
+                  {warning.title}
+                </div>
+                <div style={{
+                  fontSize: '0.9rem',
+                  fontWeight: 'normal',
+                  lineHeight: '1.4',
+                  opacity: '0.95'
+                }}>
+                  {warning.text}
+                </div>
               </div>
             ))}
             <button
