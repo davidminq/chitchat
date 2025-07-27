@@ -219,7 +219,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
 
             {/* Demo Mode Button */}
             {onGuestMode && (
-              <div style={{ marginTop: '1rem', marginBottom: '1.5rem', textAlign: 'center', paddingBottom: '1rem' }}>
+              <div style={{ marginTop: '2.5rem', marginBottom: '1.5rem', textAlign: 'center' }}>
                 <button 
                   onClick={onGuestMode}
                   style={{
@@ -246,7 +246,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                 </button>
                 
                 {/* Online Users Counter */}
-                <div style={{ marginTop: '0.5rem', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
                   <div style={{
                     backgroundColor: '#58a6ff',
                     color: 'white',

@@ -173,11 +173,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   box-sizing: border-box;
   background-color: #0d1117;
-  flex: 1;
+  min-height: 100vh;
   width: 100%;
+  padding-top: 10vh;
 }
 
 .auth-container {
@@ -185,10 +186,7 @@ body {
   margin-right: auto;
   max-width: 400px;
   width: 100%;
-  transform: translateY(-30px);
-  max-height: calc(100vh - 160px);
-  overflow-y: auto;
-  padding-bottom: 2rem;
+  padding-bottom: 5vh;
 }
 
 .auth-gate h1 {
@@ -242,12 +240,11 @@ footer {
 
 @media (max-width: 768px) {
   .auth-container {
-    max-height: calc(100vh - 140px);
-    padding: 0 1rem 3rem 1rem;
-    transform: translateY(-20px);
+    padding: 0 1rem 3vh 1rem;
   }
   
   .auth-gate {
-    padding-bottom: 100px;
+    padding-top: 5vh;
+    padding-bottom: 3vh;
   }
 }
