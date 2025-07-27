@@ -13,7 +13,10 @@ const ChatComponent = ({ user, onLogout }) => {
   const [chatRoomId, setChatRoomId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+  const [onlineUsers, setOnlineUsers] = useState(0);
   const chatWindowRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Get user location and set up chat room
   useEffect(() => {
@@ -92,6 +95,46 @@ const ChatComponent = ({ user, onLogout }) => {
 
     return () => clearInterval(cleanupInterval);
   }, [chatRoomId]);
+
+  // Handle viewport height changes for mobile keyboard
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportHeight(window.innerHeight);
+    };
+
+    const handleFocus = () => {
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 300);
+    };
+
+    window.addEventListener('resize', handleResize);
+    if (inputRef.current) {
+      inputRef.current.addEventListener('focus', handleFocus);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (inputRef.current) {
+        inputRef.current.removeEventListener('focus', handleFocus);
+      }
+    };
+  }, []);
+
+  // Simulate online users count (you can replace this with real Firebase presence)
+  useEffect(() => {
+    // Simulate random online users between 5-50
+    const updateOnlineUsers = () => {
+      setOnlineUsers(Math.floor(Math.random() * 46) + 5);
+    };
+
+    updateOnlineUsers(); // Initial count
+    const interval = setInterval(updateOnlineUsers, 30000); // Update every 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSend = async () => {
     if (input.trim() === '') return;
@@ -190,18 +233,18 @@ const ChatComponent = ({ user, onLogout }) => {
     <div className="main-layout" style={{
       display: 'flex',
       flexDirection: 'column',
-      maxWidth: '1200px',
+      maxWidth: '1400px',
+      width: '95%',
       margin: '0 auto',
       padding: '1rem',
-      paddingBottom: '120px',
       boxSizing: 'border-box',
-      minHeight: '100vh',
+      height: `${viewportHeight}px`,
       alignItems: 'center',
       position: 'relative'
     }}>
       {/* Header */}
       <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <div>
+        <div style={{ flex: 1 }}>
           <h2 style={{ margin: 0, color: 'white' }}>
             {user.nickname}
             {user.isBlueCheck && (
@@ -212,19 +255,52 @@ const ChatComponent = ({ user, onLogout }) => {
             Anonymous chat within 1km radius
           </p>
         </div>
-        <button 
-          onClick={onLogout}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#ff4444',
+        
+        {/* Online Users Counter */}
+        <div style={{ 
+          flex: 1, 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          flexDirection: 'column'
+        }}>
+          <div style={{
+            backgroundColor: '#58a6ff',
             color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Logout
-        </button>
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            fontSize: '0.9rem',
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            <span style={{ 
+              width: '8px', 
+              height: '8px', 
+              backgroundColor: '#00ff00', 
+              borderRadius: '50%',
+              animation: 'pulse 2s infinite'
+            }}></span>
+            {onlineUsers} online
+          </div>
+        </div>
+
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+          <button 
+            onClick={onLogout}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#ff4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       {/* Chat Section */}
@@ -234,9 +310,9 @@ const ChatComponent = ({ user, onLogout }) => {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#1e1e1e',
-        padding: '1rem',
-        borderRadius: '8px',
-        minHeight: 0
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '80vh'
       }}>
         <div 
           ref={chatWindowRef}
@@ -296,8 +372,17 @@ const ChatComponent = ({ user, onLogout }) => {
         </div>
 
         {/* Chat Input */}
-        <div className="chat-controls" style={{ display: 'flex', gap: '0.5rem' }}>
+        <div className="chat-controls" style={{ 
+          display: 'flex', 
+          gap: '0.5rem',
+          position: 'sticky',
+          bottom: '1rem',
+          backgroundColor: '#1e1e1e',
+          padding: '1rem 0',
+          zIndex: 100
+        }}>
           <input
+            ref={inputRef}
             type="text"
             className="message-input"
             placeholder="Enter your message..."
@@ -313,9 +398,10 @@ const ChatComponent = ({ user, onLogout }) => {
               flex: 1, 
               backgroundColor: 'white', 
               color: '#000', 
-              padding: '0.5rem',
+              padding: '0.8rem',
               border: 'none',
-              borderRadius: '4px'
+              borderRadius: '8px',
+              fontSize: '16px' // Prevents zoom on iOS
             }}
           />
           <button
@@ -336,36 +422,6 @@ const ChatComponent = ({ user, onLogout }) => {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="chat-footer" style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        width: '100%',
-        padding: '1rem 0',
-        backgroundColor: '#000',
-        textAlign: 'center',
-        zIndex: 1000,
-        borderTop: '1px solid #333'
-      }}>
-        <div className="footer-meta" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '0.75rem',
-          color: '#bbb',
-          gap: '0.3rem'
-        }}>
-          <small style={{ display: 'block' }}>
-            © 2025 Concrete Lab — All rights reserved. v1.0.3
-          </small>
-          <small style={{ display: 'block', marginTop: '0.25rem' }}>
-            Current users: Anonymous users
-          </small>
-        </div>
-      </footer>
     </div>
   );
 };

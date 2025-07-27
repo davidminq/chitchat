@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signInWithEmail, createUserWithEmail } from '../firebase';
 import { generateRandomNickname } from '../utils/nickname';
 import { createUserProfile, getUserProfile } from '../utils/userManagement';
@@ -9,6 +9,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
+  const [onlineUsers, setOnlineUsers] = useState(0);
 
   const handleEmailAuth = async (e) => {
     e.preventDefault();
@@ -69,6 +70,19 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
       setLoading(false);
     }
   };
+
+  // Simulate online users count (same as ChatComponent)
+  useEffect(() => {
+    // Simulate random online users between 5-50
+    const updateOnlineUsers = () => {
+      setOnlineUsers(Math.floor(Math.random() * 46) + 5);
+    };
+
+    updateOnlineUsers(); // Initial count
+    const interval = setInterval(updateOnlineUsers, 30000); // Update every 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
 
 
@@ -205,7 +219,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
 
             {/* Demo Mode Button */}
             {onGuestMode && (
-              <div style={{ marginTop: '2rem', marginBottom: '6rem', textAlign: 'center', paddingBottom: '2rem' }}>
+              <div style={{ marginTop: '2rem', marginBottom: '3rem', textAlign: 'center', paddingBottom: '2rem' }}>
                 <button 
                   onClick={onGuestMode}
                   style={{
@@ -230,35 +244,36 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
                 >
                   Try Demo Mode
                 </button>
+                
+                {/* Online Users Counter */}
+                <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+                  <div style={{
+                    backgroundColor: '#58a6ff',
+                    color: 'white',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '20px',
+                    fontSize: '0.9rem',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem'
+                  }}>
+                    <span style={{ 
+                      width: '8px', 
+                      height: '8px', 
+                      backgroundColor: '#00ff00', 
+                      borderRadius: '50%',
+                      animation: 'pulse 2s infinite'
+                    }}></span>
+                    {onlineUsers} online
+                  </div>
+                </div>
               </div>
             )}
 
           </div>
         </div>
       </div>
-      <footer className="chat-footer" style={{
-        width: '100%',
-        padding: '1rem 0',
-        backgroundColor: 'transparent',
-        textAlign: 'center'
-      }}>
-        <div className="footer-meta" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '0.75rem',
-          color: '#bbb',
-          gap: '0.3rem'
-        }}>
-          <small style={{ display: 'block' }}>
-            © 2025 Concrete Lab — All rights reserved. v1.0.3
-          </small>
-          <small style={{ display: 'block', marginTop: '0.25rem' }}>
-            Current users: Anonymous users
-          </small>
-        </div>
-      </footer>
     </>
   );
 };

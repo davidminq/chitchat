@@ -32,6 +32,21 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  /* iOS Safari viewport fix */
+  height: 100vh;
+  height: -webkit-fill-available;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+  }
 }
 
 .main-layout {
@@ -60,7 +75,7 @@ body {
   border-radius: 8px;
   overflow-y: auto;
   margin-bottom: 1rem;
-  min-height: 500px;
+  min-height: 70vh;
 }
 
 .chat-controls {
