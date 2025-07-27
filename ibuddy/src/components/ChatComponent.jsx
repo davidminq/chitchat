@@ -448,15 +448,15 @@ const ChatComponent = ({ user, onLogout }) => {
         display: 'flex', 
         alignItems: 'center',
         backgroundColor: showWarnings ? '#2f2f2f' : '#2f2f2f',
-        borderRadius: '24px',
+        borderRadius: '20px',
         border: 'none',
-        padding: '0.4rem 1rem',
-        minHeight: '52px',
-        margin: '0.75rem',
+        padding: '0.2rem 0.8rem',
+        minHeight: '44px',
+        margin: '0.5rem 0.75rem',
         position: 'sticky',
         bottom: '0.5rem',
         zIndex: 1000,
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.03)',
         backgroundClip: 'padding-box',
         WebkitBackgroundClip: 'padding-box'
       }}>
@@ -475,12 +475,12 @@ const ChatComponent = ({ user, onLogout }) => {
           disabled={showWarnings}
           style={{ 
             flex: 1,
-            padding: '0.5rem 0.5rem',
+            padding: '0.3rem 0.4rem',
             backgroundColor: 'transparent',
             color: showWarnings ? '#8b949e' : '#ececf1',
             border: 'none',
             borderRadius: '0',
-            fontSize: '1rem',
+            fontSize: '0.95rem',
             outline: 'none',
             cursor: showWarnings ? 'not-allowed' : 'text',
             resize: 'none',
@@ -491,21 +491,21 @@ const ChatComponent = ({ user, onLogout }) => {
           onClick={handleSend}
           disabled={showWarnings || !input.trim()}
           style={{
-            padding: '0.4rem',
+            padding: '0.3rem',
             backgroundColor: (showWarnings || !input.trim()) ? '#565869' : '#19c37d',
             color: 'white',
             border: 'none',
-            borderRadius: '20px',
+            borderRadius: '16px',
             cursor: (showWarnings || !input.trim()) ? 'not-allowed' : 'pointer',
-            fontSize: '1rem',
+            fontSize: '0.9rem',
             fontWeight: '600',
             transition: 'all 0.2s ease',
-            minWidth: '32px',
-            height: '32px',
+            minWidth: '28px',
+            height: '28px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            marginLeft: '0.5rem'
+            marginLeft: '0.4rem'
           }}
           onMouseOver={(e) => {
             if (!showWarnings && input.trim()) e.target.style.backgroundColor = '#0fa968';
