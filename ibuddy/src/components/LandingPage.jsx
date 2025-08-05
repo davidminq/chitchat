@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { Button } from "./ui/button";
 import { motion } from "framer-motion";
 import { GoogleIcon } from "./icons/GoogleIcon";
@@ -27,6 +27,19 @@ const fontStyles = {
 
 export default function LandingPage({ onGuestMode }) {
   const [isStarting, setIsStarting] = useState(false);
+  const [onlineCount, setOnlineCount] = useState(1247);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOnlineCount(prev => {
+        const change = Math.floor(Math.random() * 21) - 10; // -10 to +10
+        const newCount = Math.max(900, Math.min(2000, prev + change));
+        return newCount;
+      });
+    }, 2000 + Math.random() * 3000); // 2-5 seconds random interval
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleStartChat = useCallback(() => {
     if (isStarting || !onGuestMode) return;
@@ -166,9 +179,16 @@ export default function LandingPage({ onGuestMode }) {
           {/* Chat stats */}
           <div className="grid grid-cols-2 gap-4 p-4 bg-slate-700/30 rounded-2xl border border-slate-600/50">
             <div className="text-center">
-              <p className="text-2xl text-white mb-1" style={fontStyles.button}>
-                1,247
-              </p>
+              <motion.p 
+                key={onlineCount}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="text-2xl text-white mb-1" 
+                style={fontStyles.button}
+              >
+                {onlineCount.toLocaleString()}
+              </motion.p>
               <div className="flex items-center justify-center gap-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" aria-hidden="true"></div>
                 <p className="text-slate-400 text-xs" style={fontStyles.body}>
