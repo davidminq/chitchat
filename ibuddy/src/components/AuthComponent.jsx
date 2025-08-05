@@ -94,7 +94,7 @@ const AuthComponent = ({ onAuthSuccess, onGuestMode }) => {
         <div className="auth-container">
           <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
             <h1 style={{ 
-              marginTop: '2rem',
+              marginTop: '1rem',
               color: '#58a6ff',
               fontSize: '2.5rem',
               fontWeight: 'bold'

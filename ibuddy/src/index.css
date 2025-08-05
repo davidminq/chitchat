@@ -1,3 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-size: 14px;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --text-2xl: 1.5rem;
+  --text-xl: 1.25rem;
+  --text-lg: 1.125rem;
+  --text-base: 1rem;
+}
+
+html {
+  font-size: var(--font-size);
+  font-family: 'Poppins', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: var(--text-2xl);
+}
+
+h2 {
+  font-size: var(--text-xl);
+}
+
+h3 {
+  font-size: var(--text-lg);
+}
+
+h4, h5, h6 {
+  font-size: var(--text-base);
+}
+
+p, span, div {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+}
+
+label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+input, textarea {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
