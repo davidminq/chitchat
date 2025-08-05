@@ -99,10 +99,9 @@ body {
   font-family: 'Pretendard', sans-serif;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   /* iOS Safari viewport fix */
-  height: 100vh;
-  height: -webkit-fill-available;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   /* Enhanced mobile keyboard support */
   -webkit-user-select: none;
   -moz-user-select: none;

@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from './firebase';
 import ChatComponent from './components/ChatComponent';
 import LandingPage from './components/LandingPage';
+import AdminLogin from './components/AdminLogin';
+import AdminDashboard from './components/AdminDashboard';
 
 // Color palette moved outside component to prevent re-creation
 const COLOR_PALETTE = ['#FF69B4', '#1E90FF', '#FFD700', '#00FA9A', '#BA55D3', '#FF4500'];
@@ -17,7 +20,8 @@ const LoadingScreen = () => (
   </div>
 );
 
-function App() {
+// Main App Component
+function MainApp() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -126,6 +130,22 @@ function App() {
       )}
     </div>
   )
+}
+
+// App with Router
+function App() {
+  return (
+    <Router basename="/ibuddy">
+      <Routes>
+        {/* Main app routes */}
+        <Route path="/" element={<MainApp />} />
+        
+        {/* Hidden admin routes */}
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;

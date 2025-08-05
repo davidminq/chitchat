@@ -444,7 +444,7 @@ const ChatComponent = ({ user, onLogout }) => {
             fontSize: '0.9rem'
           }}
         >
-          Logout
+          Exit
         </button>
       </div>
 
