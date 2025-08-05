@@ -487,7 +487,7 @@ const ChatComponent = ({ user, onLogout }) => {
         <input
           ref={inputRef}
           type="text"
-          placeholder={showWarnings ? "Please acknowledge safety warnings first..." : "Message ibuddy"}
+          placeholder={showWarnings ? "Please acknowledge safety warnings first..." : "Message ChitChat"}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
