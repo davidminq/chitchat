@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-size: 14px;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --text-2xl: 1.5rem;
+  --text-xl: 1.25rem;
+  --text-lg: 1.125rem;
+  --text-base: 1rem;
+}
+
+html {
+  font-size: var(--font-size);
+  font-family: 'Poppins', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: var(--text-2xl);
+}
+
+h2 {
+  font-size: var(--text-xl);
+}
+
+h3 {
+  font-size: var(--text-lg);
+}
+
+h4, h5, h6 {
+  font-size: var(--text-base);
+}
+
+p, span, div {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+}
+
+label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+input, textarea {
+  font-family: 'Poppins', sans-serif;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.chat-window {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: #0d1117;
+}
+
+.chat-footer {
+  position: sticky;
+  bottom: 0;
+  background-color: #1e1e1e;
+  border-top: 1px solid #30363d;
+  padding: 1rem;
+  color: #ffffff;
+}
+.footer-inner {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+body {
+  background-color: #0d1117;
+  color: #ffffff;
+  font-family: 'Pretendard', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* iOS Safari viewport fix */
+  height: 100vh;
+  height: -webkit-fill-available;
+  /* Enhanced mobile keyboard support */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+  }
+}
+
+.main-layout {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.chat-section {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chat-window {
+  flex: 1;
+  background-color: #0e1117;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  min-height: 70vh;
+}
+
+.chat-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nickname-input,
+.message-input {
+  padding: 0.5rem;
+  background-color: #1c1f26;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  flex: 1;
+}
+
+.send-button {
+  background-color: #238636;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.auth-box {
+  background-color: #1f1f1f;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.auth-input {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  box-sizing: border-box;
+}
+
+.auth-login {
+  width: 100%;
+  background: white;
+  color: black;
+  font-weight: bold;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: none;
+  margin-bottom: 0.5rem;
+}
+
+
+.auth-options {
+  font-size: 0.8rem;
+  color: #ccc;
+  margin-bottom: 0.5rem;
+}
+
+.auth-links {
+  font-size: 0.8rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.auth-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.main-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  gap: 2rem;
+}
+.side-section {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+.auth-links a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.auth-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  background-color: #0d1117;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 2vh 1rem 3vh 1rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.auth-container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+  width: 100%;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.auth-gate h1 {
+  font-size: 2.5rem;
+  color: #58a6ff;
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  color: #aaa;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.gate-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #238636;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.gate-button:hover {
+  background-color: #2ea043;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+  padding: 0.5rem 0;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.75rem;
+  background-color: #0d1117;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .auth-gate {
+    padding: 1vh 0.5rem 2vh 0.5rem;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+  
+  .auth-container {
+    padding: 0;
+    margin-top: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* iPhone 특화 최적화 */
+@supports (-webkit-touch-callout: none) {
+  .auth-gate {
+    min-height: -webkit-fill-available;
+  }
+  
+  @media (max-width: 768px) {
+    .auth-gate {
+      padding-top: max(1vh, env(safe-area-inset-top, 20px));
+      padding-bottom: max(2vh, env(safe-area-inset-bottom, 20px));
+    }
+  }
+}
