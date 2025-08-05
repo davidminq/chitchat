@@ -91,8 +91,9 @@ export default function LandingPage({ onGuestMode }) {
     "Be respectful to others"
   ], []);
 
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-start py-8 px-4" style={fontStyles.body}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-start py-4 sm:py-8 px-3 sm:px-4" style={fontStyles.body}>
       <div className="w-full max-w-lg text-center">
         {/* Main logo */}
         <motion.div
@@ -102,10 +103,10 @@ export default function LandingPage({ onGuestMode }) {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <h1 className="text-6xl mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent" style={fontStyles.heading}>
+          <h1 className="text-4xl sm:text-6xl mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent" style={fontStyles.heading}>
             Chit Chat
           </h1>
-          <p className="text-slate-400 text-lg" style={fontStyles.subheading}>
+          <p className="text-slate-400 text-base sm:text-lg" style={fontStyles.subheading}>
             Anonymous random chat with strangers
           </p>
         </motion.div>
@@ -116,7 +117,7 @@ export default function LandingPage({ onGuestMode }) {
           initial="initial"
           animate="animate"
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-slate-800/50 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-slate-700/50 mb-8"
+          className="bg-slate-800/50 backdrop-blur-sm rounded-3xl p-4 sm:p-8 shadow-2xl border border-slate-700/50 mb-8"
         >
           {/* Anonymous chat description */}
           <div className="mb-8">
@@ -126,16 +127,13 @@ export default function LandingPage({ onGuestMode }) {
                 Completely Anonymous
               </span>
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed" style={fontStyles.body}>
-              No registration required. Start chatting instantly with random people around the world.
-            </p>
           </div>
 
           {/* Main start button */}
           <Button
             onClick={handleStartChat}
             disabled={isStarting || !onGuestMode}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl py-6 mb-6 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl py-4 sm:py-6 mb-6 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-sm sm:text-base"
             size="lg"
             style={fontStyles.button}
             aria-label={isStarting ? "Finding someone to chat" : "Start anonymous chat"}
@@ -152,7 +150,7 @@ export default function LandingPage({ onGuestMode }) {
 
 
           {/* Chat stats */}
-          <div className="grid grid-cols-2 gap-4 p-4 bg-slate-700/30 rounded-2xl border border-slate-600/50">
+          <div className="grid grid-cols-2 gap-4 p-4 bg-slate-700/30 rounded-2xl border border-slate-600/50 mt-8">
             <div className="text-center">
               <motion.p 
                 key={onlineCount}
@@ -190,6 +188,33 @@ export default function LandingPage({ onGuestMode }) {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="space-y-6"
         >
+          {/* Feature highlights */}
+          <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
+            <div className="text-center">
+              <div className="mx-auto mb-2 sm:mb-3">
+                <span className="text-xl sm:text-2xl">🎲</span>
+              </div>
+              <p className="text-slate-300 text-xs sm:text-sm font-medium" style={fontStyles.medium}>
+                Random
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-2 sm:mb-3">
+                <span className="text-xl sm:text-2xl">🔒</span>
+              </div>
+              <p className="text-slate-300 text-xs sm:text-sm font-medium" style={fontStyles.medium}>
+                Anonymous
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-2 sm:mb-3">
+                <span className="text-xl sm:text-2xl">⚡</span>
+              </div>
+              <p className="text-slate-300 text-xs sm:text-sm font-medium" style={fontStyles.medium}>
+                Instant
+              </p>
+            </div>
+          </div>
 
           {/* Safety notice */}
           <div className="bg-slate-800/30 rounded-2xl p-4 border border-slate-700/50">
@@ -209,7 +234,7 @@ export default function LandingPage({ onGuestMode }) {
           </div>
 
           {/* Footer links */}
-          <div className="flex justify-center gap-6 text-sm text-slate-500 mt-8">
+          <div className="flex justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-500 mt-6 sm:mt-8">
             <button 
               className="hover:text-slate-300 transition-colors" 
               style={fontStyles.body}
