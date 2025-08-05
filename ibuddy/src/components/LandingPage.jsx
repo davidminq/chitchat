@@ -92,7 +92,7 @@ export default function LandingPage({ onGuestMode }) {
   ], []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4" style={fontStyles.body}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-start py-8 px-4" style={fontStyles.body}>
       <div className="w-full max-w-lg text-center">
         {/* Main logo */}
         <motion.div
