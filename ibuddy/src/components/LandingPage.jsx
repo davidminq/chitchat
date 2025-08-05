@@ -121,7 +121,7 @@ export default function LandingPage({ onGuestMode }) {
         >
           {/* Anonymous chat description */}
           <div className="mb-8">
-            <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="flex items-center justify-center gap-2 mb-2">
               <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" aria-hidden="true"></div>
               <span className="text-slate-300 text-sm" style={fontStyles.medium}>
                 Completely Anonymous
@@ -150,7 +150,7 @@ export default function LandingPage({ onGuestMode }) {
 
 
           {/* Chat stats */}
-          <div className="grid grid-cols-2 gap-4 p-4 bg-slate-700/30 rounded-2xl border border-slate-600/50 mt-8">
+          <div className="grid grid-cols-2 gap-4 p-4 bg-slate-700/30 rounded-2xl border border-slate-600/50 mt-4">
             <div className="text-center">
               <motion.p 
                 key={onlineCount}
