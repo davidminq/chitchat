@@ -1,8 +1,8 @@
-# 🌐 iBuddy
+# 🌐 ChitChat
 
 **Chat with anyone within a 1km radius**
 
-iBuddy is a location-based real-time chat application that connects people in your immediate area. Built with React and Firebase, it creates local communities through proximity-based chat rooms.
+ChitChat is a location-based real-time chat application that connects people in your immediate area. Built with React and Firebase, it creates local communities through proximity-based chat rooms.
 
 ## ✨ Features
 
@@ -18,7 +18,7 @@ iBuddy is a location-based real-time chat application that connects people in yo
 
 ```bash
 # Clone and install
-git clone https://github.com/davidminq/ibuddy.git
+git clone https://github.com/davidminq/chitchat.git
 cd ibuddy
 npm install
 
@@ -35,7 +35,7 @@ npm run dev
 
 ## 🌐 Live Demo
 
-Visit: **[davidminq.github.io/ibuddy](https://davidminq.github.io/ibuddy)**
+Visit: **[davidminq.github.io/chitchat](https://davidminq.github.io/chitchat)**
 
 ## 📱 How It Works
 
