@@ -111,8 +111,8 @@ export default function AdminLogin() {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="admin@chitchat.com"
-                className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
-                style={fontStyles.body}
+                className="w-full px-4 py-4 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 touch-manipulation"
+                style={{...fontStyles.body, minHeight: '56px', fontSize: '16px'}}
                 required
               />
             </div>
@@ -129,8 +129,8 @@ export default function AdminLogin() {
                 value={formData.password}
                 onChange={handleInputChange}
                 placeholder="Enter admin password"
-                className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
-                style={fontStyles.body}
+                className="w-full px-4 py-4 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 touch-manipulation"
+                style={{...fontStyles.body, minHeight: '56px', fontSize: '16px'}}
                 required
               />
             </div>
@@ -139,8 +139,8 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-3 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-              style={fontStyles.button}
+              className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-4 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none touch-manipulation"
+              style={{...fontStyles.button, minHeight: '56px', fontSize: '1.1rem'}}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center gap-2">
@@ -181,8 +181,8 @@ export default function AdminLogin() {
         >
           <button
             onClick={() => navigate("/")}
-            className="text-gray-400 hover:text-gray-300 text-sm transition-colors duration-200"
-            style={fontStyles.body}
+            className="text-gray-400 hover:text-gray-300 text-base transition-colors duration-200 py-3 px-2 touch-manipulation"
+            style={{...fontStyles.body, minHeight: '44px'}}
           >
             ← Back to Home
           </button>

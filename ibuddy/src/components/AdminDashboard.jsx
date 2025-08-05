@@ -46,31 +46,52 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black" style={fontStyles.body}>
       {/* Header */}
       <header className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-red-600 to-orange-600 rounded-lg flex items-center justify-center">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <div className="w-8 h-8 bg-gradient-to-r from-red-600 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <span className="text-sm">🔐</span>
               </div>
-              <h1 className="text-xl text-white" style={fontStyles.heading}>
-                Admin Dashboard
+              <h1 className="text-lg sm:text-xl text-white truncate" style={fontStyles.heading}>
+                <span className="hidden sm:inline">Admin Dashboard</span>
+                <span className="sm:hidden">Admin</span>
               </h1>
             </div>
             
-            <div className="flex items-center gap-4">
+            {/* Desktop Header */}
+            <div className="hidden md:flex items-center gap-4">
               <span className="text-gray-400 text-sm" style={fontStyles.body}>
                 {adminEmail}
               </span>
               <button
                 onClick={handleBackToApp}
-                className="px-3 py-1.5 text-gray-400 hover:text-white text-sm transition-colors duration-200"
+                className="px-4 py-2.5 text-gray-400 hover:text-white text-sm transition-colors duration-200 touch-manipulation min-h-[44px]"
                 style={fontStyles.body}
               >
                 View App
               </button>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded-lg text-sm transition-all duration-200 border border-red-600/30"
+                className="px-4 py-2.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded-lg text-sm transition-all duration-200 border border-red-600/30 touch-manipulation min-h-[44px]"
+                style={fontStyles.medium}
+              >
+                Logout
+              </button>
+            </div>
+            
+            {/* Mobile Header */}
+            <div className="flex md:hidden items-center gap-2">
+              <button
+                onClick={handleBackToApp}
+                className="p-2 text-gray-400 hover:text-white transition-colors duration-200 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center"
+                style={fontStyles.body}
+                title="View App"
+              >
+                <span className="text-lg">🏠</span>
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-3 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded-lg text-sm transition-all duration-200 border border-red-600/30 touch-manipulation min-h-[44px]"
                 style={fontStyles.medium}
               >
                 Logout
@@ -82,6 +103,23 @@ export default function AdminDashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Mobile User Info */}
+        <div className="md:hidden mb-6 bg-gray-800/30 backdrop-blur-sm rounded-2xl p-4 border border-gray-700/50">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-400 text-xs mb-1" style={fontStyles.body}>Logged in as</p>
+              <p className="text-white text-sm" style={fontStyles.medium}>{adminEmail}</p>
+            </div>
+            <button
+              onClick={handleBackToApp}
+              className="px-3 py-2 bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white rounded-lg text-sm transition-all duration-200 touch-manipulation min-h-[44px]"
+              style={fontStyles.body}
+            >
+              🏠 View App
+            </button>
+          </div>
+        </div>
+        
         {/* Welcome Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -89,7 +127,7 @@ export default function AdminDashboard() {
           transition={{ duration: 0.6 }}
           className="mb-8"
         >
-          <h2 className="text-3xl text-white mb-2" style={fontStyles.heading}>
+          <h2 className="text-2xl sm:text-3xl text-white mb-2" style={fontStyles.heading}>
             Welcome to ChitChat Admin
           </h2>
           <p className="text-gray-400" style={fontStyles.subheading}>
@@ -109,7 +147,7 @@ export default function AdminDashboard() {
             { title: "Total Messages", value: "45,892", icon: "💬", change: "+8%" },
             { title: "Active Rooms", value: "324", icon: "🏠", change: "+5%" },
             { title: "Reports", value: "23", icon: "⚠️", change: "-15%" }
-          ].map((stat, index) => (
+          ].map((stat) => (
             <div
               key={stat.title}
               className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50"
@@ -178,7 +216,7 @@ export default function AdminDashboard() {
               icon: "🔧",
               action: "Maintenance"
             }
-          ].map((card, index) => (
+          ].map((card) => (
             <div
               key={card.title}
               className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-200"
@@ -194,7 +232,7 @@ export default function AdminDashboard() {
               </p>
               <button
                 onClick={() => console.log(`${card.title} clicked`)}
-                className="w-full px-4 py-2 bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white rounded-xl transition-all duration-200 text-sm"
+                className="w-full px-4 py-3 bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white rounded-xl transition-all duration-200 text-sm touch-manipulation min-h-[48px]"
                 style={fontStyles.medium}
               >
                 {card.action}
@@ -224,7 +262,7 @@ export default function AdminDashboard() {
               <button
                 key={action}
                 onClick={() => console.log(`${action} clicked`)}
-                className="px-4 py-2 bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white rounded-lg text-sm transition-all duration-200"
+                className="px-4 py-2.5 bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white rounded-lg text-sm transition-all duration-200 touch-manipulation min-h-[44px]"
                 style={fontStyles.body}
               >
                 {action}
