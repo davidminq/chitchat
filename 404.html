@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChitChat - Page Not Found</title>
+    <meta http-equiv="refresh" content="0; url=/ibuddy/" />
+    <title>ChitChat - Redirecting...</title>
     <style>
         body {
             margin: 0;
@@ -58,43 +59,18 @@
 <body>
     <div class="container">
         <div class="logo">ChitChat</div>
-        <div class="message">Redirecting you to the right place...</div>
+        <div class="message">Redirecting to main app...</div>
         <div class="loading">
             <div class="spinner"></div>
-            Loading application...
+            Please wait...
         </div>
     </div>
 
     <script>
-        // GitHub Pages SPA redirect script
-        // Based on https://github.com/rafgraph/spa-github-pages
-        (function(l) {
-            if (l.search[1] === '?') {
-                var decoded = l.search.slice(1).split('&').map(function(s) { 
-                    return s.replace(/~and~/g, '&')
-                }).join('?');
-                window.history.replaceState(null, null,
-                    l.pathname.slice(0, -1) + decoded + l.hash
-                );
-            } else {
-                // Handle direct navigation to SPA routes
-                var pathSegmentsToKeep = 1; // for /ibuddy/
-                var segments = l.pathname.slice(1).split('/');
-                
-                if (segments.length > pathSegmentsToKeep) {
-                    var redirect = '/' + segments.slice(0, pathSegmentsToKeep).join('/') + 
-                                   '/?/' + segments.slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-                                   (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-                                   l.hash;
-                    l.replace(redirect);
-                } else {
-                    // Fallback redirect to main app
-                    setTimeout(function() {
-                        window.location.href = '/ibuddy/';
-                    }, 1000);
-                }
-            }
-        }(window.location));
+        // Fallback JavaScript redirect in case meta refresh doesn't work
+        setTimeout(function() {
+            window.location.href = '/ibuddy/';
+        }, 100);
     </script>
 </body>
 </html>
