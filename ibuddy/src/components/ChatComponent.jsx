@@ -304,7 +304,6 @@ const ChatComponent = ({ user, onLogout }) => {
     <div className="chat-layout" style={{
       display: 'flex',
       flexDirection: 'column',
-      minHeight: '100vh',
       minHeight: '100dvh', // Dynamic viewport height for mobile
       width: '100%',
       backgroundColor: '#0d1117',
