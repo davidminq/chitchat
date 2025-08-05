@@ -216,6 +216,8 @@ const ChatComponent = ({ user, onLogout }) => {
         hasViolation: hasViolation,
         likeCount: 0,
         dislikeCount: 0,
+        likedBy: [],
+        dislikedBy: [],
         isBlueCheck: user.isBlueCheck || false,
         color: user.color || '#58a6ff'
       };
@@ -247,6 +249,8 @@ const ChatComponent = ({ user, onLogout }) => {
         hasViolation: hasViolation,
         likeCount: 0,
         dislikeCount: 0,
+        likedBy: [],
+        dislikedBy: [],
         isBlueCheck: user.isBlueCheck || false,
         color: user.color || '#58a6ff'
       });
@@ -259,13 +263,81 @@ const ChatComponent = ({ user, onLogout }) => {
   };
 
   const handleLike = async (messageId) => {
-    // TODO: Implement like functionality with user tracking to prevent multiple likes
-    console.log('Like message:', messageId);
+    try {
+      setMessages(prev => prev.map(msg => {
+        if (msg.id !== messageId) return msg;
+        
+        const likedBy = msg.likedBy || [];
+        const dislikedBy = msg.dislikedBy || [];
+        const userId = user.uid;
+        
+        // Check if user already liked this message
+        const hasLiked = likedBy.includes(userId);
+        
+        if (hasLiked) {
+          // Remove like (toggle off)
+          return {
+            ...msg,
+            likedBy: likedBy.filter(id => id !== userId),
+            likeCount: Math.max(0, (msg.likeCount || 0) - 1)
+          };
+        } else {
+          // Add like and remove dislike if exists
+          const newDislikedBy = dislikedBy.filter(id => id !== userId);
+          const dislikeCountAdjustment = dislikedBy.includes(userId) ? -1 : 0;
+          
+          return {
+            ...msg,
+            likedBy: [...likedBy, userId],
+            dislikedBy: newDislikedBy,
+            likeCount: (msg.likeCount || 0) + 1,
+            dislikeCount: Math.max(0, (msg.dislikeCount || 0) + dislikeCountAdjustment)
+          };
+        }
+      }));
+      console.log('Like message:', messageId);
+    } catch (error) {
+      console.error('Like error:', error);
+    }
   };
 
   const handleDislike = async (messageId) => {
-    // TODO: Implement dislike functionality with user tracking to prevent multiple dislikes
-    console.log('Dislike message:', messageId);
+    try {
+      setMessages(prev => prev.map(msg => {
+        if (msg.id !== messageId) return msg;
+        
+        const likedBy = msg.likedBy || [];
+        const dislikedBy = msg.dislikedBy || [];
+        const userId = user.uid;
+        
+        // Check if user already disliked this message
+        const hasDisliked = dislikedBy.includes(userId);
+        
+        if (hasDisliked) {
+          // Remove dislike (toggle off)
+          return {
+            ...msg,
+            dislikedBy: dislikedBy.filter(id => id !== userId),
+            dislikeCount: Math.max(0, (msg.dislikeCount || 0) - 1)
+          };
+        } else {
+          // Add dislike and remove like if exists
+          const newLikedBy = likedBy.filter(id => id !== userId);
+          const likeCountAdjustment = likedBy.includes(userId) ? -1 : 0;
+          
+          return {
+            ...msg,
+            dislikedBy: [...dislikedBy, userId],
+            likedBy: newLikedBy,
+            dislikeCount: (msg.dislikeCount || 0) + 1,
+            likeCount: Math.max(0, (msg.likeCount || 0) + likeCountAdjustment)
+          };
+        }
+      }));
+      console.log('Dislike message:', messageId);
+    } catch (error) {
+      console.error('Dislike error:', error);
+    }
   };
 
   const handleReport = async (messageId, reportedUserId) => {
@@ -431,12 +503,55 @@ const ChatComponent = ({ user, onLogout }) => {
                   {msg.text}
                 </div>
                 <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem' }}>
+                  {(() => {
+                    const hasLiked = (msg.likedBy || []).includes(user.uid);
+                    const hasDisliked = (msg.dislikedBy || []).includes(user.uid);
+                    
+                    return (
+                      <>
+                        <button 
+                          onClick={() => handleLike(msg.id, msg.likeCount || 0)}
+                          style={{ 
+                            background: hasLiked ? '#58a6ff20' : 'none', 
+                            border: hasLiked ? '1px solid #58a6ff' : 'none', 
+                            color: hasLiked ? '#58a6ff' : '#8b949e', 
+                            cursor: 'pointer',
+                            padding: '0.2rem 0.5rem',
+                            borderRadius: '4px',
+                            transition: 'all 0.2s',
+                            fontWeight: hasLiked ? 'bold' : 'normal'
+                          }}
+                          onMouseOver={(e) => e.target.style.backgroundColor = hasLiked ? '#58a6ff30' : '#21262d'}
+                          onMouseOut={(e) => e.target.style.backgroundColor = hasLiked ? '#58a6ff20' : 'transparent'}
+                        >
+                          👍 {msg.likeCount || 0}
+                        </button>
+                        <button 
+                          onClick={() => handleDislike(msg.id, msg.dislikeCount || 0)}
+                          style={{ 
+                            background: hasDisliked ? '#f8514920' : 'none', 
+                            border: hasDisliked ? '1px solid #f85149' : 'none', 
+                            color: hasDisliked ? '#f85149' : '#8b949e', 
+                            cursor: 'pointer',
+                            padding: '0.2rem 0.5rem',
+                            borderRadius: '4px',
+                            transition: 'all 0.2s',
+                            fontWeight: hasDisliked ? 'bold' : 'normal'
+                          }}
+                          onMouseOver={(e) => e.target.style.backgroundColor = hasDisliked ? '#f8514930' : '#21262d'}
+                          onMouseOut={(e) => e.target.style.backgroundColor = hasDisliked ? '#f8514920' : 'transparent'}
+                        >
+                          👎 {msg.dislikeCount || 0}
+                        </button>
+                      </>
+                    );
+                  })()}
                   <button 
-                    onClick={() => handleLike(msg.id, msg.likeCount || 0)}
+                    onClick={() => handleReport(msg.id, msg.userId)}
                     style={{ 
                       background: 'none', 
                       border: 'none', 
-                      color: '#58a6ff', 
+                      color: '#ff7b72', 
                       cursor: 'pointer',
                       padding: '0.2rem 0.5rem',
                       borderRadius: '4px',
@@ -445,42 +560,8 @@ const ChatComponent = ({ user, onLogout }) => {
                     onMouseOver={(e) => e.target.style.backgroundColor = '#21262d'}
                     onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
                   >
-                    👍 {msg.likeCount || 0}
+                    Report
                   </button>
-                  <button 
-                    onClick={() => handleDislike(msg.id, msg.dislikeCount || 0)}
-                    style={{ 
-                      background: 'none', 
-                      border: 'none', 
-                      color: '#f85149', 
-                      cursor: 'pointer',
-                      padding: '0.2rem 0.5rem',
-                      borderRadius: '4px',
-                      transition: 'background-color 0.2s'
-                    }}
-                    onMouseOver={(e) => e.target.style.backgroundColor = '#21262d'}
-                    onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
-                  >
-                    👎 {msg.dislikeCount || 0}
-                  </button>
-                  {msg.userId !== user.uid && (
-                    <button 
-                      onClick={() => handleReport(msg.id, msg.userId)}
-                      style={{ 
-                        background: 'none', 
-                        border: 'none', 
-                        color: '#ff7b72', 
-                        cursor: 'pointer',
-                        padding: '0.2rem 0.5rem',
-                        borderRadius: '4px',
-                        transition: 'background-color 0.2s'
-                      }}
-                      onMouseOver={(e) => e.target.style.backgroundColor = '#21262d'}
-                      onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
-                    >
-                      Report
-                    </button>
-                  )}
                 </div>
               </div>
             );
