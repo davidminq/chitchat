@@ -150,31 +150,6 @@ export default function LandingPage({ onGuestMode }) {
             )}
           </Button>
 
-          {/* Divider */}
-          <div className="flex items-center my-6">
-            <div className="flex-1 border-t border-slate-600"></div>
-            <span className="px-4 text-slate-400 text-sm" style={fontStyles.body}>or sign in with</span>
-            <div className="flex-1 border-t border-slate-600"></div>
-          </div>
-
-          {/* SSO login buttons */}
-          <div className="space-y-3 mb-6">
-            {socialLogins.map((social) => (
-              <Button
-                key={social.name}
-                onClick={() => handleSSOLogin(social.name)}
-                className={`w-full ${social.bg} transition-all duration-200 flex items-center justify-center gap-3 rounded-2xl py-4`}
-                size="lg"
-                style={fontStyles.medium}
-                aria-label={`Continue with ${social.name}`}
-              >
-                {social.icon}
-                <span className={social.textColor}>
-                  Continue with {social.name}
-                </span>
-              </Button>
-            ))}
-          </div>
 
           {/* Chat stats */}
           <div className="grid grid-cols-2 gap-4 p-4 bg-slate-700/30 rounded-2xl border border-slate-600/50">
