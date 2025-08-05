@@ -133,7 +133,7 @@ export default function LandingPage({ onGuestMode }) {
           <Button
             onClick={handleStartChat}
             disabled={isStarting || !onGuestMode}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl py-4 sm:py-6 mb-6 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-sm sm:text-base"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl py-5 sm:py-6 mb-6 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-base sm:text-lg min-h-[56px] touch-manipulation"
             size="lg"
             style={fontStyles.button}
             aria-label={isStarting ? "Finding someone to chat" : "Start anonymous chat"}
@@ -234,23 +234,23 @@ export default function LandingPage({ onGuestMode }) {
           </div>
 
           {/* Footer links */}
-          <div className="flex justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-500 mt-6 sm:mt-8">
+          <div className="flex justify-center gap-4 sm:gap-6 text-sm sm:text-sm text-slate-500 mt-6 sm:mt-8">
             <button 
-              className="hover:text-slate-300 transition-colors" 
+              className="hover:text-slate-300 transition-colors py-2 px-1 min-h-[44px] touch-manipulation" 
               style={fontStyles.body}
               onClick={() => console.log('Terms of Service clicked')}
             >
               Terms of Service
             </button>
             <button 
-              className="hover:text-slate-300 transition-colors" 
+              className="hover:text-slate-300 transition-colors py-2 px-1 min-h-[44px] touch-manipulation" 
               style={fontStyles.body}
               onClick={() => console.log('Privacy Policy clicked')}
             >
               Privacy Policy
             </button>
             <button 
-              className="hover:text-slate-300 transition-colors" 
+              className="hover:text-slate-300 transition-colors py-2 px-1 min-h-[44px] touch-manipulation" 
               style={fontStyles.body}
               onClick={() => console.log('Report clicked')}
             >
