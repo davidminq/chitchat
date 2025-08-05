@@ -384,13 +384,15 @@ const ChatComponent = ({ user, onLogout }) => {
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100dvh', // Dynamic viewport height for mobile
+      height: '100dvh',
       width: '100%',
       backgroundColor: '#0d1117',
       position: 'fixed',
       top: 0,
       left: 0,
       right: 0,
-      bottom: 0
+      bottom: 0,
+      overflowY: 'hidden' // Prevent body scroll on mobile
     }}>
       {/* Header - Fixed */}
       <div className="chat-header" style={{
@@ -404,22 +406,23 @@ const ChatComponent = ({ user, onLogout }) => {
         minHeight: '50px',
         zIndex: 1000
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <h2 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, minWidth: 0 }}>
+          <h2 style={{ margin: 0, color: 'white', fontSize: '1.1rem', truncate: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '120px' }}>
             {user.nickname}
             {user.isBlueCheck && (
-              <img src={blueCheckMarkIcon} alt="Blue Check" style={{ width: '18px', height: '18px', marginLeft: '8px' }} />
+              <img src={blueCheckMarkIcon} alt="Blue Check" style={{ width: '16px', height: '16px', marginLeft: '6px' }} />
             )}
           </h2>
           <div style={{
             backgroundColor: '#58a6ff',
             color: 'white',
-            padding: '0.3rem 0.8rem',
-            borderRadius: '12px',
-            fontSize: '0.8rem',
+            padding: '0.25rem 0.6rem',
+            borderRadius: '10px',
+            fontSize: '0.75rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.4rem'
+            gap: '0.3rem',
+            whiteSpace: 'nowrap'
           }}>
             <span style={{ 
               width: '6px', 
@@ -435,13 +438,16 @@ const ChatComponent = ({ user, onLogout }) => {
         <button 
           onClick={onLogout}
           style={{
-            padding: '0.5rem 1rem',
+            padding: '0.75rem 1.25rem',
             backgroundColor: '#ff4444',
             color: 'white',
             border: 'none',
-            borderRadius: '6px',
+            borderRadius: '8px',
             cursor: 'pointer',
-            fontSize: '0.9rem'
+            fontSize: '0.95rem',
+            minHeight: '44px',
+            minWidth: '60px',
+            touchAction: 'manipulation'
           }}
         >
           Exit
@@ -480,13 +486,16 @@ const ChatComponent = ({ user, onLogout }) => {
             const nicknameEffect = getNicknameEffect(msg.likeCount || 0);
             return (
               <div key={msg.id} style={{ 
-                marginBottom: '1.5rem',
-                padding: '1rem',
+                marginBottom: '1rem',
+                padding: '0.75rem 1rem',
                 backgroundColor: '#161b22',
-                borderRadius: '8px',
-                border: '1px solid #21262d'
+                borderRadius: '12px',
+                border: '1px solid #21262d',
+                maxWidth: '100%',
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <strong style={{ color: msg.color || '#58a6ff', fontSize: '0.95rem' }}>
                       {nicknameEffect.effect}{msg.nickname}{nicknameEffect.effect}
@@ -499,10 +508,10 @@ const ChatComponent = ({ user, onLogout }) => {
                     {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
-                <div style={{ color: '#f0f6fc', marginBottom: '0.8rem', lineHeight: '1.5' }}>
+                <div style={{ color: '#f0f6fc', marginBottom: '0.8rem', lineHeight: '1.6', fontSize: '1rem', wordBreak: 'break-word', hyphens: 'auto' }}>
                   {msg.text}
                 </div>
-                <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.8rem', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                   {(() => {
                     const hasLiked = (msg.likedBy || []).includes(user.uid);
                     const hasDisliked = (msg.dislikedBy || []).includes(user.uid);
@@ -513,13 +522,17 @@ const ChatComponent = ({ user, onLogout }) => {
                           onClick={() => handleLike(msg.id, msg.likeCount || 0)}
                           style={{ 
                             background: hasLiked ? '#58a6ff20' : 'none', 
-                            border: hasLiked ? '1px solid #58a6ff' : 'none', 
+                            border: hasLiked ? '1px solid #58a6ff' : '1px solid transparent', 
                             color: hasLiked ? '#58a6ff' : '#8b949e', 
                             cursor: 'pointer',
-                            padding: '0.2rem 0.5rem',
-                            borderRadius: '4px',
+                            padding: '0.5rem 0.75rem',
+                            borderRadius: '8px',
                             transition: 'all 0.2s',
-                            fontWeight: hasLiked ? 'bold' : 'normal'
+                            fontWeight: hasLiked ? 'bold' : 'normal',
+                            minHeight: '44px',
+                            minWidth: '60px',
+                            touchAction: 'manipulation',
+                            fontSize: '0.9rem'
                           }}
                           onMouseOver={(e) => e.target.style.backgroundColor = hasLiked ? '#58a6ff30' : '#21262d'}
                           onMouseOut={(e) => e.target.style.backgroundColor = hasLiked ? '#58a6ff20' : 'transparent'}
@@ -530,13 +543,17 @@ const ChatComponent = ({ user, onLogout }) => {
                           onClick={() => handleDislike(msg.id, msg.dislikeCount || 0)}
                           style={{ 
                             background: hasDisliked ? '#f8514920' : 'none', 
-                            border: hasDisliked ? '1px solid #f85149' : 'none', 
+                            border: hasDisliked ? '1px solid #f85149' : '1px solid transparent', 
                             color: hasDisliked ? '#f85149' : '#8b949e', 
                             cursor: 'pointer',
-                            padding: '0.2rem 0.5rem',
-                            borderRadius: '4px',
+                            padding: '0.5rem 0.75rem',
+                            borderRadius: '8px',
                             transition: 'all 0.2s',
-                            fontWeight: hasDisliked ? 'bold' : 'normal'
+                            fontWeight: hasDisliked ? 'bold' : 'normal',
+                            minHeight: '44px',
+                            minWidth: '60px',
+                            touchAction: 'manipulation',
+                            fontSize: '0.9rem'
                           }}
                           onMouseOver={(e) => e.target.style.backgroundColor = hasDisliked ? '#f8514930' : '#21262d'}
                           onMouseOut={(e) => e.target.style.backgroundColor = hasDisliked ? '#f8514920' : 'transparent'}
@@ -550,12 +567,16 @@ const ChatComponent = ({ user, onLogout }) => {
                     onClick={() => handleReport(msg.id, msg.userId)}
                     style={{ 
                       background: 'none', 
-                      border: 'none', 
+                      border: '1px solid transparent', 
                       color: '#ff7b72', 
                       cursor: 'pointer',
-                      padding: '0.2rem 0.5rem',
-                      borderRadius: '4px',
-                      transition: 'background-color 0.2s'
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '8px',
+                      transition: 'background-color 0.2s',
+                      minHeight: '44px',
+                      minWidth: '70px',
+                      touchAction: 'manipulation',
+                      fontSize: '0.9rem'
                     }}
                     onMouseOver={(e) => e.target.style.backgroundColor = '#21262d'}
                     onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
@@ -576,17 +597,18 @@ const ChatComponent = ({ user, onLogout }) => {
         backgroundColor: showWarnings ? '#2f2f2f' : '#2f2f2f',
         borderRadius: '20px',
         border: 'none',
-        padding: '0.2rem 0.8rem',
-        minHeight: '44px',
+        padding: '0.3rem 0.8rem',
+        minHeight: '56px',
         margin: '0.5rem 0.75rem',
         position: 'sticky',
         bottom: 'max(0.5rem, env(keyboard-inset-height, 0px))',
         zIndex: 1000,
-        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.03)',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05)',
         backgroundClip: 'padding-box',
         WebkitBackgroundClip: 'padding-box',
         transform: 'translateZ(0)',
-        willChange: 'transform'
+        willChange: 'transform',
+        flexShrink: 0
       }}>
         <input
           ref={inputRef}
@@ -619,21 +641,22 @@ const ChatComponent = ({ user, onLogout }) => {
           onClick={handleSend}
           disabled={showWarnings || !input.trim()}
           style={{
-            padding: '0.3rem',
+            padding: '0.5rem',
             backgroundColor: (showWarnings || !input.trim()) ? '#565869' : '#19c37d',
             color: 'white',
             border: 'none',
-            borderRadius: '16px',
+            borderRadius: '18px',
             cursor: (showWarnings || !input.trim()) ? 'not-allowed' : 'pointer',
-            fontSize: '0.9rem',
+            fontSize: '1rem',
             fontWeight: '600',
             transition: 'all 0.2s ease',
-            minWidth: '28px',
-            height: '28px',
+            minWidth: '44px',
+            minHeight: '44px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            marginLeft: '0.4rem'
+            marginLeft: '0.5rem',
+            touchAction: 'manipulation'
           }}
           onMouseOver={(e) => {
             if (!showWarnings && input.trim()) e.target.style.backgroundColor = '#0fa968';
@@ -772,15 +795,17 @@ const ChatComponent = ({ user, onLogout }) => {
                   backgroundColor: allWarningsChecked ? '#007AFF' : '#333333',
                   color: 'white',
                   border: 'none',
-                  padding: '1rem 2rem',
+                  padding: '1.25rem 2rem',
                   borderRadius: '12px',
                   cursor: allWarningsChecked ? 'pointer' : 'not-allowed',
-                  fontSize: '1rem',
+                  fontSize: '1.1rem',
                   fontWeight: '600',
                   transition: 'all 0.2s',
                   width: '100%',
+                  minHeight: '56px',
                   opacity: allWarningsChecked ? 1 : 0.5,
-                  fontFamily: 'Poppins, sans-serif'
+                  fontFamily: 'Poppins, sans-serif',
+                  touchAction: 'manipulation'
                 }}
                 onMouseOver={(e) => {
                   if (allWarningsChecked) {
