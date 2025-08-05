@@ -215,6 +215,7 @@ const ChatComponent = ({ user, onLogout }) => {
         timestamp: new Date(),
         hasViolation: hasViolation,
         likeCount: 0,
+        dislikeCount: 0,
         isBlueCheck: user.isBlueCheck || false,
         color: user.color || '#58a6ff'
       };
@@ -245,6 +246,7 @@ const ChatComponent = ({ user, onLogout }) => {
         timestamp: serverTimestamp(),
         hasViolation: hasViolation,
         likeCount: 0,
+        dislikeCount: 0,
         isBlueCheck: user.isBlueCheck || false,
         color: user.color || '#58a6ff'
       });
@@ -259,6 +261,11 @@ const ChatComponent = ({ user, onLogout }) => {
   const handleLike = async (messageId) => {
     // TODO: Implement like functionality with user tracking to prevent multiple likes
     console.log('Like message:', messageId);
+  };
+
+  const handleDislike = async (messageId) => {
+    // TODO: Implement dislike functionality with user tracking to prevent multiple dislikes
+    console.log('Dislike message:', messageId);
   };
 
   const handleReport = async (messageId, reportedUserId) => {
@@ -439,6 +446,22 @@ const ChatComponent = ({ user, onLogout }) => {
                     onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
                   >
                     👍 {msg.likeCount || 0}
+                  </button>
+                  <button 
+                    onClick={() => handleDislike(msg.id, msg.dislikeCount || 0)}
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      color: '#f85149', 
+                      cursor: 'pointer',
+                      padding: '0.2rem 0.5rem',
+                      borderRadius: '4px',
+                      transition: 'background-color 0.2s'
+                    }}
+                    onMouseOver={(e) => e.target.style.backgroundColor = '#21262d'}
+                    onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+                  >
+                    👎 {msg.dislikeCount || 0}
                   </button>
                   {msg.userId !== user.uid && (
                     <button 
