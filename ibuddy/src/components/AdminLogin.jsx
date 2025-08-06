@@ -167,7 +167,7 @@ export default function AdminLogin() {
               </p>
             </div>
             <p className="text-gray-500 text-xs text-center leading-relaxed" style={fontStyles.body}>
-              This area is restricted to authorized administrators only. All access attempts are logged and monitored.
+              This area is restricted to authorized administrators only.
             </p>
           </motion.div>
         </motion.div>

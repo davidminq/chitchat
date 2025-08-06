@@ -8,7 +8,23 @@ import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 
 // Color palette moved outside component to prevent re-creation
-const COLOR_PALETTE = ['#FF69B4', '#1E90FF', '#FFD700', '#00FA9A', '#BA55D3', '#FF4500'];
+const COLOR_PALETTE = [
+  '#FF0000', // Red
+  '#0000FF', // Blue
+  '#008000', // Green
+  '#FF69B4', // HotPink
+  '#FF4500', // OrangeRed
+  '#FF7F50', // Coral
+  '#9ACD32', // YellowGreen
+  '#2E8B57', // SeaGreen
+  '#DAA520', // GoldenRod
+  '#D2691E', // Chocolate
+  '#5F9EA0', // CadetBlue
+  '#1E90FF', // DodgerBlue
+  '#8A2BE2', // BlueViolet
+  '#00FF7F', // SpringGreen
+  '#B22222'  // Firebrick
+];
 
 // Loading component for better reusability
 const LoadingScreen = () => (
@@ -134,6 +150,20 @@ function MainApp() {
 
 // App with Router
 function App() {
+  useEffect(() => {
+    // Handle GitHub Pages SPA routing
+    (function(l) {
+      if (l.search[1] === '/' ) {
+        var decoded = l.search.slice(1).split('&').map(function(s) { 
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location));
+  }, []);
+
   return (
     <Router basename="/ibuddy">
       <Routes>

@@ -117,7 +117,7 @@ export default function LandingPage({ onGuestMode }) {
           initial="initial"
           animate="animate"
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-slate-800/50 backdrop-blur-sm rounded-3xl p-4 sm:p-8 shadow-2xl border border-slate-700/50 mb-8"
+          className="bg-slate-800/50 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-700/50 mb-8"
         >
           {/* Anonymous chat description */}
           <div className="mb-8">
@@ -133,7 +133,7 @@ export default function LandingPage({ onGuestMode }) {
           <Button
             onClick={handleStartChat}
             disabled={isStarting || !onGuestMode}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl py-5 sm:py-6 mb-6 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-base sm:text-lg min-h-[56px] touch-manipulation"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl py-6 sm:py-6 mb-6 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg sm:text-lg min-h-[60px] touch-manipulation"
             size="lg"
             style={fontStyles.button}
             aria-label={isStarting ? "Finding someone to chat" : "Start anonymous chat"}
@@ -189,28 +189,28 @@ export default function LandingPage({ onGuestMode }) {
           className="space-y-6"
         >
           {/* Feature highlights */}
-          <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
-            <div className="text-center">
-              <div className="mx-auto mb-2 sm:mb-3">
-                <span className="text-xl sm:text-2xl">🎲</span>
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-8">
+            <div className="text-center p-3 sm:p-4">
+              <div className="mx-auto mb-3 sm:mb-3">
+                <span className="text-2xl sm:text-3xl">🎲</span>
               </div>
-              <p className="text-slate-300 text-xs sm:text-sm font-medium" style={fontStyles.medium}>
+              <p className="text-slate-300 text-sm sm:text-base font-medium" style={fontStyles.medium}>
                 Random
               </p>
             </div>
-            <div className="text-center">
-              <div className="mx-auto mb-2 sm:mb-3">
-                <span className="text-xl sm:text-2xl">🔒</span>
+            <div className="text-center p-3 sm:p-4">
+              <div className="mx-auto mb-3 sm:mb-3">
+                <span className="text-2xl sm:text-3xl">🔒</span>
               </div>
-              <p className="text-slate-300 text-xs sm:text-sm font-medium" style={fontStyles.medium}>
+              <p className="text-slate-300 text-sm sm:text-base font-medium" style={fontStyles.medium}>
                 Anonymous
               </p>
             </div>
-            <div className="text-center">
-              <div className="mx-auto mb-2 sm:mb-3">
-                <span className="text-xl sm:text-2xl">⚡</span>
+            <div className="text-center p-3 sm:p-4">
+              <div className="mx-auto mb-3 sm:mb-3">
+                <span className="text-2xl sm:text-3xl">⚡</span>
               </div>
-              <p className="text-slate-300 text-xs sm:text-sm font-medium" style={fontStyles.medium}>
+              <p className="text-slate-300 text-sm sm:text-base font-medium" style={fontStyles.medium}>
                 Instant
               </p>
             </div>
@@ -234,23 +234,23 @@ export default function LandingPage({ onGuestMode }) {
           </div>
 
           {/* Footer links */}
-          <div className="flex justify-center gap-4 sm:gap-6 text-sm sm:text-sm text-slate-500 mt-6 sm:mt-8">
+          <div className="flex justify-center gap-6 sm:gap-8 text-sm sm:text-base text-slate-500 mt-8 sm:mt-8">
             <button 
-              className="hover:text-slate-300 transition-colors py-2 px-1 min-h-[44px] touch-manipulation" 
+              className="hover:text-slate-300 transition-colors py-3 px-4 min-h-[48px] min-w-[80px] touch-manipulation rounded-lg" 
               style={fontStyles.body}
               onClick={() => console.log('Terms of Service clicked')}
             >
-              Terms of Service
+              Terms
             </button>
             <button 
-              className="hover:text-slate-300 transition-colors py-2 px-1 min-h-[44px] touch-manipulation" 
+              className="hover:text-slate-300 transition-colors py-3 px-4 min-h-[48px] min-w-[80px] touch-manipulation rounded-lg" 
               style={fontStyles.body}
               onClick={() => console.log('Privacy Policy clicked')}
             >
-              Privacy Policy
+              Privacy
             </button>
             <button 
-              className="hover:text-slate-300 transition-colors py-2 px-1 min-h-[44px] touch-manipulation" 
+              className="hover:text-slate-300 transition-colors py-3 px-4 min-h-[48px] min-w-[80px] touch-manipulation rounded-lg" 
               style={fontStyles.body}
               onClick={() => console.log('Report clicked')}
             >

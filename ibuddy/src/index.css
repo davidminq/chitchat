@@ -111,6 +111,7 @@ body {
   padding: 0;
   /* iOS Safari viewport fix */
   min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height */
   min-height: -webkit-fill-available;
   /* Enhanced mobile keyboard support */
   -webkit-user-select: none;
@@ -124,6 +125,10 @@ body {
   -webkit-overflow-scrolling: touch;
   /* Prevent iOS zoom on input focus */
   -webkit-text-size-adjust: 100%;
+  /* Enhanced contrast for better readability */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes pulse {
@@ -365,10 +370,10 @@ footer {
 
 /* Mobile Touch Optimizations */
 @media (max-width: 768px) {
-  /* Ensure all touch targets are at least 44px */
+  /* Ensure all touch targets are at least 48px for better accessibility */
   button, input[type="button"], input[type="submit"], a {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 48px;
+    min-width: 48px;
     touch-action: manipulation;
   }
   
@@ -377,7 +382,7 @@ footer {
     font-size: 16px !important; /* Prevent iOS zoom */
     appearance: none;
     -webkit-appearance: none;
-    border-radius: 0;
+    border-radius: 8px;
   }
   
   /* Optimize for mobile viewport */
@@ -422,5 +427,48 @@ footer {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Enhanced keyboard navigation support */
+@media (max-width: 768px) {
+  /* Better keyboard support with Visual Viewport API */
+  html {
+    height: 100%;
+    height: 100dvh;
+  }
+  
+  /* Prevent keyboard from shifting layout */
+  .chat-layout {
+    height: 100dvh !important;
+    overflow: hidden;
+  }
+  
+  /* Better focus indicators for mobile */
+  button:focus, input:focus, textarea:focus {
+    outline: 2px solid #58a6ff;
+    outline-offset: 2px;
+  }
+}
+
+/* Enhanced small screen support (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  :root {
+    --font-size: 13px;
+  }
+  
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Large mobile screens (iPhone 14 Pro Max, etc.) */
+@media (min-width: 414px) and (max-width: 768px) {
+  :root {
+    --font-size: 15px;
+  }
+  
+  html {
+    font-size: 15px;
   }
 }
