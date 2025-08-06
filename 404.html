@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=/ibuddy/" />
     <title>ChitChat - Redirecting...</title>
     <style>
         body {
@@ -67,10 +66,29 @@
     </div>
 
     <script>
-        // Fallback JavaScript redirect in case meta refresh doesn't work
-        setTimeout(function() {
-            window.location.href = '/ibuddy/';
-        }, 100);
+        // GitHub Pages SPA routing fix
+        (function(l) {
+            if (l.search[1] === '/' ) {
+                var decoded = l.search.slice(1).split('&').map(function(s) { 
+                    return s.replace(/~and~/g, '&')
+                }).join('?');
+                window.history.replaceState(null, null,
+                    l.pathname.slice(0, -1) + decoded + l.hash
+                );
+            }
+        }(window.location));
+
+        // Store current path and redirect to main app
+        var currentPath = window.location.pathname.replace('/ibuddy', '');
+        if (currentPath && currentPath !== '/') {
+            // Encode the path as a search parameter
+            var encodedPath = '/?/' + currentPath.slice(1).split('/').map(function(segment) {
+                return segment.replace(/&/g, '~and~');
+            }).join('&');
+            window.location.replace('https://davidminq.github.io/ibuddy' + encodedPath);
+        } else {
+            window.location.replace('https://davidminq.github.io/ibuddy/');
+        }
     </script>
 </body>
 </html>
