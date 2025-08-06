@@ -160,15 +160,23 @@ export default function AdminLogin() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-6 pt-6 border-t border-gray-700/50"
           >
-            <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="flex items-center justify-center gap-2 mb-3">
               <span className="text-yellow-400">⚠️</span>
-              <p className="text-gray-400 text-xs" style={fontStyles.medium}>
+              <p className="text-gray-300 text-sm font-semibold" style={fontStyles.medium}>
                 Security Notice
               </p>
             </div>
-            <p className="text-gray-500 text-xs text-center leading-relaxed" style={fontStyles.body}>
-              This area is restricted to authorized administrators only.
-            </p>
+            <div className="space-y-2 text-center">
+              <p className="text-gray-400 text-xs leading-relaxed" style={fontStyles.body}>
+                This area is restricted to authorized administrators only.
+              </p>
+              <p className="text-gray-500 text-xs leading-relaxed" style={fontStyles.body}>
+                All access attempts are logged and monitored for security purposes.
+              </p>
+              <p className="text-gray-500 text-xs leading-relaxed" style={fontStyles.body}>
+                Unauthorized access is strictly prohibited and may result in legal action.
+              </p>
+            </div>
           </motion.div>
         </motion.div>
 
